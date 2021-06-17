@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST"  >
+		{% csrf_token %}
+        
+        
+       
+        
+        {{ form.as_p }}
+
+        <button href="{% url 'addsize' %}" type="submit">
+            add
+        </button>		
+				<!-- <a style="color:white" class="btn btn-primary btn-lg" href="ad_user">Cancel</a> -->
+			</div>  
+		</div>		      
+	</form>
+</body>
+</html>

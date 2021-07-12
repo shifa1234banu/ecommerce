@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>payment</title>
+</head>
+<body>
+    <form action="{%url 'success'%}" method="POST" style="text-align: center;" class="razorpay-payment-button">
+        <script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        data-key="rzp_test_McpTwy2buPXsp6"
+        data-amount={{response.amount}}
+        data-currency={{response.currency}}
+        data-order_id={{response.id}}
+        data-buttontext="Pay with Razorpay"
+        data-name="{{request.user.username}}"
+        data-description=""
+        data-image=""
+        data-prefill.name={{request.user.username}}
+        data-prefill.email={{request.user.email}}
+        data-theme.color="#F37254"
+    ></script>
+    <input type="hidden" custom="Hidden Element" name="hidden">
+    </form>
+    <div id="paypal-button-container"></div>
+    <script src="https://www.paypal.com/sdk/js?client-id=AUTfx7RRUmjTjtvmWWulOv6qChECKKdHya1RM-RjHTzzWzzSme_CuCXi5KJt1_1_ZG_piUI2tZ_-lgNW&currency=USD"></script>
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // Render the PayPal button into #paypal-button-container
+        var amount = {{ grandtotal }}
+       
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: amount,
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    console.log(details);
+                    alert(' Transaction completed by ' + details.payer.name.given_name + '!')
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+	</script>
+</body>
+</html>

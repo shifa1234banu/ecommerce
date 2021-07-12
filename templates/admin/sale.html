@@ -1,0 +1,315 @@
+{% load static %}
+<!DOCTYPE html> 
+<!-- 
+Template Name: BRILLIANT Bootstrap Admin Template
+Version: 4.5.6
+Author: WebThemez
+Website: http://www.webthemez.com/ 
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+      <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta content="" name="description" />
+    <meta content="webthemez" name="author" />
+    <title>Bootstrap Admin Template : BRILLIANT - WebThemez</title>
+	<!-- Bootstrap Styles-->
+    <link href="{% static 'admin/css/bootstrap.css' %}" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="{% static 'admin/css/font-awesome.css' %}" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+    <link href="{% static 'admin/js/morris/morris-0.4.3.min.css' %}" rel="stylesheet" />
+        <!-- Custom Styles-->
+    <link href="{% static 'admin/css/custom-styles.css' %}" rel="stylesheet" />
+     <!-- Google Fonts-->
+   <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+   <script src="https://kit.fontawesome.com/06a0807a55.js" crossorigin="anonymous"></script>
+   
+</head>
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default top-navbar" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href=""><strong> Zehak</strong></a>
+				<div id="sideNav" href="">
+		<i class="fa fa-bars icon"></i> 
+		</div>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                
+                <!-- /.dropdown -->
+                
+                <!-- /.dropdown -->
+                
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                       
+                        <li class="divider"></li>
+                        <li><a href="{% url 'ad_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
+        <nav class="navbar-default navbar-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+
+                    <li>
+                        <a href="{% url 'adhome' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user' %}"><i class="fa fa-desktop"></i> User management</a>
+                    </li>
+					 
+					 <li>
+                        <a href="{% url 'product' %}" ><i class="fa fa-sitemap"></i> product management<span class="fa arrow"></span></a>
+                        <!-- <ul class="nav nav-second-level">
+                            <li>
+                                <a href="addnew.html">Add new</a>
+                            </li>
+                            <li>
+                                <a href="product.html">product details</a>
+                            </li>
+							</ul> -->
+						</li>	
+                    <li>
+                        <a href="{% url 'category' %}"><i class="fa fa-qrcode"></i> Category management</a>
+                    </li>
+                    
+                    <li>
+                        <a href="{% url 'order' %}"><i class="fa fa-table"></i> Order management</a>
+                    </li>
+                    <!-- <li>
+                        <a href="form.html"><i class="fa fa-edit"></i> Forms </a>
+                    </li> -->
+
+
+                    <!-- <li>
+                        <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="#">Second Level Link</a>
+                            </li>
+                            <li>
+                                <a href="#">Second Level Link</a>
+                            </li>
+                            <li>
+                                <a href="#">Second Level Link<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level">
+                                    <li>
+                                        <a href="#">Third Level Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Third Level Link</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Third Level Link</a>
+                                    </li>
+
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li> -->
+                    <li>
+                        <a href="{% url 'coupon' %}"><i class="fa fa-fw fa-file"></i> Coupon management</a>
+                    </li>
+
+                    <li>
+                        <a class="active-menu" href="{% url 'sale' %}"><i class="fa fa-fw fa-file"></i> Sales report</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+		  <div class="header"> 
+                       
+                        <!-- <button type="button">
+                            <a href="{% url 'addsize' %}">Add size</a>
+                        </button> -->
+                        <div class="row">
+                          <div class="col-md-3">
+                            <form action="" method="POST">
+                                {%csrf_token%}
+                                <label for="exampleFormControlFile1">From</label>
+                                <input type="date" class="form-control"  id="fromdate" name="datefrom" onclick="fromClick()" onchange="from(event)" value="" min="2021-05-01" max="2021-08-01" required="" >
+                                </div>
+                                <div class="col-md-3">
+                                <label for="exampleFormControlFile1">to</label>
+                                <input type="date" class="form-control"  id="todate" onclick="toClick()" name="dateto" required="" >
+                              </div>
+                              
+                                 <div class="col-md-3" style="margin-top: 30px;"> <button type="submit"  class="btn btn-primary ">Search</button></div>
+                                  
+                                
+                            </form>
+                            <div class="pl-5" style="margin-left:100px ;"><a href="#" onclick="location.reload()">Refresh</a></div>
+                           
+                        
+                        </div>
+                         <div class="col-md-10 m-auto mr-5">
+                            <table id="example" class="table table-striped table-bordered col-md-12 m-4 " style="width:100%" >
+                                <thead style="border: teal; ">
+                                  <tr >
+                                    <th scope="col">sl.no</th>
+                                    <th scope="col">Date </th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Payment <br> Method</th>
+                                    <th scope="col">Amount</th>
+                                  </tr>
+                                </thead>
+                                <tbody >
+                                    {% for order in orders%}
+                                  <tr>
+                                    <th scope="row"> {{ forloop.counter }}</th>
+                                    <td><b>{{order.order_date}}</b></td>
+                                   
+                                    <td><b>{{order.item.productname}}</b></td>
+                                    <td><b>{{order.user.first_name}}</b></td>
+                                    <td><b>{{order.status}}</b></td>
+                                    <td><b>{{order.pay_method}}</b></td>
+                                    <td><b>{{order.price}}</b></td>
+                                  </tr>
+                                  {% endfor %}
+                                </tbody>
+                              </table>
+                            </div>
+                            </div>  
+						
+									
+		</div>
+           
+            
+
+    
+      
+               
+
+</div>
+                 
+                         
+                
+                
+           </div>
+                 <!-- /. ROW  -->
+				 
+				</div>
+             <!-- /. PAGE INNER  -->
+            </div>
+         <!-- /. PAGE WRAPPER  -->
+        </div>
+
+        
+     <!-- /. WRAPPER  -->
+    <!-- JS Scripts-->
+    <!-- jQuery Js -->
+    <script src="{% static 'admin/js/jquery-1.10.2.js' %}"></script>
+      <!-- Bootstrap Js -->
+    <script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
+    <!-- Metis Menu Js -->
+    <script src="{% static 'admin/js/jquery.metisMenu.js' %}"></script>
+     <!-- Morris Chart Js -->
+     <script src="{% static 'admin/js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static 'admin/js/morris/morris.js' %}"></script>
+      <!-- Custom Js -->
+    <script src="{% static 'admin/js/custom-scripts.js' %}"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+    <script src= "https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ],
+                drawCallback: function () {
+                    var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+                    $('.buttons-csv')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                    $('.buttons-excel')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                    $('.buttons-pdf')[0].style.visibility = hasRows ? 'visible' : 'hidden'
+                }
+            } );
+        } );
+        
+      
+        function from(event){
+            var start_date = event.target.value
+            document.getElementById("todate").min=start_date
+        }
+
+
+
+
+
+    </script>
+
+    <script>
+      function toClick(){
+        var to = document.getElementById('todate')
+        var from = document.getElementById('fromdate').value
+        console.log(from)
+        if (from == ""){
+          from = "2021-06-01"
+        }
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2,'0');
+        var mm = String(today.getMonth() + 1).padStart(2,'0');
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        to.setAttribute("max", today);
+        to.setAttribute("min", from)
+        console.log(today)
+      }
+
+      function fromClick(){
+        var to =document.getElementById('todate').value
+        var from = document.getElementById('fromdate')
+        if (to == ""){
+          var today = new Date();
+          var dd = String(today.getDate()).padStart(2,'0');
+          var mm = String(today.getMonth() + 1).padStart(2,'0');
+          var yyyy = today.getFullYear();
+          today = yyyy + '-' + mm + '-' + dd;
+          to = today;
+        }
+        
+        from.setAttribute("max",to);
+      }
+    </script>
+
+    
+   
+</body>
+</html>

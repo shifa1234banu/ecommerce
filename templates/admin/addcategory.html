@@ -85,26 +85,43 @@
 </style>
 </head>
 <body>
-<div class="category form">
-    <form method="POST"  enctype="multipart/form-data">
-		{% csrf_token %}
-        
-        {{ form.media }}
-        {{ form.as_p }}
 
-        <button href="{% url 'addcategory' %}" type="submit">
-            add
-        </button>		
-				<!-- <a style="color:white" class="btn btn-primary btn-lg" href="ad_user">Cancel</a> -->
-			</div>  
-		</div>		      
-	</form>
+	<div class="container">
+		<div class="col-md-12 ">
+			<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6 ">
+				<form style="border-radius: 5px; width: 500px;" method="POST"  enctype="multipart/form-data">
+					{% csrf_token %}
+					
+					{{ form.media }}
+					{{ form.as_p }}
+			      <div class="col-md-12">
+					  <div class="col-md-3"></div>
+					  <div class="col-md-6">
+						<button class="btn btn-primary "  href="{% url 'addcategory' %}" type="submit">
+							add
+						</button>	
+					  </div>
+					  <div class="col-md-3"></div>
+				  </div>
+						
+							
+						</div>  
+					</div>
+					</div>		      
+				</form>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+		</div>
+	
 	<div>
         {% for message in messages %}
         <h3>{{message}}</h3>
         {% endfor %}
     </div>
 	
-</div>
+
 </body>
 </html>

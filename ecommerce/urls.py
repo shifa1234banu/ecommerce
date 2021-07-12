@@ -22,5 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('',include('zehak.urls')),
     path('admin/', include('week8.urls')),
+    # path('admins/',admin.site.urls,)
+    # path('admins/', admin.site),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

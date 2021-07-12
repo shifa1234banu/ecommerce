@@ -1,15 +1,20 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from week8.models import Product
+from week8.models import Size,Coupon,Category
 from django.contrib import messages
 from django.contrib.auth.models import User,auth
-from .models import Profile,Cart,CartItem,Address
-from django.http import HttpResponse
+from .models import Profile,Cart,CartItem,Address,Order
+from django.http import HttpResponse,JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q,Count
-from .forms import AddressForm
+from .forms import AddressForm,ProfileForm,UserForm
 import random
 from twilio.rest import Client
 from django.contrib.auth.decorators import login_required
+import datetime
+import razorpay
+from decouple import config
+
 
 
 
@@ -21,9 +26,33 @@ from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    queryset = Product.objects.all()
-    context = {'products' : queryset}
+    brand = Product.objects.all()
+    product = Product.objects.all()
+    category = Category.objects.all()
+    brands = Product.objects.filter(brand=brand)
+   
+    for p in product:
+        if p.offers > p.category.offer:
+            p.newprice=int(p.price-(p.offers*p.price/100))
+        elif p.offers <= p.category.offer:
+            p.newprice=int(p.price-(p.category.offer*p.price/100))
+        p.save()
+    print(request.user.is_authenticated)
+    context = {'products' : product,
+               'categories': category,
+               'brands':brand
+                }
+    
     return render(request,"user/index.html",context)
+
+    
+
+
+def size(request):
+    size = Size.objects.all()
+    context = {'sizes' : size}
+    return render(request,"user/productdetails.html",context)
+
        
 
 def userlogin(request):
@@ -37,8 +66,7 @@ def productdetails(request, id):
 
 
 
-def otp(request):
-    return render(request,"user/otp.html")    
+  
 
 
 def register(request):
@@ -65,10 +93,12 @@ def register(request):
             
             
             
-            profile = Profile(user=user,num=num)
+            profile = Profile()
+            profile.num=num
+            profile.user=user
             profile.save()
             print('working')
-            request.session['validnum'] = 'validnum'
+            # request.session['validnum'] = 'validnum'
             return redirect('home')
 
         return render(request,"user/register.html")
@@ -83,6 +113,13 @@ def logincheck(request):
 
             user = auth.authenticate(username=username,password=password)
             if user is not None:
+                try:
+                    cart = Cart.objects.get(cart_id=_cart_id(request))
+                    cart_item = CartItem.objects.get(cart=cart)
+                    cart_item.user= user
+                    cart_item.save()
+                except:
+                    pass    
                 auth.login(request, user)
                 request.session['num'] = 'num'
                 return redirect('home')
@@ -98,65 +135,98 @@ def otplogin(request):
         is_user = Profile.objects.filter(num=num).exists()
         if is_user :
 
-            validnum = random.randint(1000, 9999)
-            # account_sid ='AC71c08d07ed3583edf7657ecd0040d057'
-            # auth_token = '87ac49a092c370a9f358dbd11d3ed7e3'
-            # client = Client(account_sid, auth_token)
+            
+            account_sid = config('account_sid')
+            auth_token = config('auth_token')
+            client = Client(account_sid, auth_token)
 
-            # message = client.messages.create(
-            #                             body=f'OTP login - {validnum}',
-            #                             from_='+1 781 661 5912',
-            #                             to='+91' +num
-            #                             )
+            verification = client.verify \
+                                .services(config('verification')) \
+                                .verifications \
+                                .create(to='+91' +num, channel='sms')
 
-            print(validnum)
-            request.session['validnum'] = validnum
+            print(verification.status)
+            
+
+           
+            
             request.session['num'] = num
             return render(request,"user/otp.html")
-
-       
-        
-
-        
         else:
             messages.error(request,"This phone number is not registered",extra_tags=signin)
     return render(request,"user/login.html")
 
-
 def verify(request):
-    print('verify')
+   
     if request.method == 'POST':
-        print('method post')
-        otp = str(request.POST['otp'])
-        votp = str(request.session['validnum'])
-        if votp == otp:
-            print('save otp')
-            num = request.session['num']
-            profile = Profile.objects.get(num = num)
+        
+        otp = request.POST['otp']
+        num = request.session['num']
+        
+        account_sid = config('account_sid')
+        auth_token = config('auth_token')
+        client = Client(account_sid, auth_token)
+
+        verification_check = client.verify \
+                                .services(config('verification')) \
+                                .verification_checks \
+                                .create(to='+91' +num, code=otp)
+
+        print(verification_check.status)
+        if verification_check.status == 'approved':
+            profile = Profile.objects.get(num=num)
             user = profile.user
-            print(user.username)
+        
             auth.login(request,user)
             print('loggedin')
             return redirect('home')
         
     return redirect('userlogin')                    
 
-           
+def otp(request):
+    return render(request,"user/otp.html")  
 
+
+def usercheck(request):
+    return render(request,"user/profile.html")
 
 
 def userprofile(request):
-    return render(request,"user/profile.html")
+    
+        user =request.user
+        profile = Profile.objects.get(user=user)
+
+        profileform = ProfileForm(instance=profile)
+
+        userform = UserForm(instance=user)
+        
+
+        if request.method == 'POST':
+             print('work')
+             profileform = ProfileForm(request.POST , request.FILES , instance=profile)
+
+             if profileform.is_valid():
+                profileform.save()
+
+       
+        context={
+            'profileform' : profileform,
+            'userform': userform,
+         }
+            
+    
+        return render(request,"user/profile.html",context)
 
 
 @login_required(login_url='userlogin')
 def checkout(request, total=0, quantity=0,cart_item=None):
     if request.session.has_key('num'):
+        cart_items = None
         try:
-            cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+            cart_items = CartItem.objects.filter(user=request.user, is_active=True)
             for cart_item in cart_items:
-                total +=(cart_item.product.price * cart_item.quantity)
+                total +=(cart_item.product.newprice * cart_item.quantity)
+                sub_total = cart_item.product.newprice * cart_item.quantity 
                 quantity += cart_item.quantity
             delivery = 100
             grandtotal = total + delivery
@@ -174,6 +244,7 @@ def checkout(request, total=0, quantity=0,cart_item=None):
             'delivery' : delivery,
             'grandtotal' : grandtotal,
             'addresses' : queryset,
+            'sub_total' : sub_total,
             
             }
 
@@ -186,73 +257,19 @@ def _cart_id(request):
     cart = request.session.session_key
     if not cart:
         cart = request.session.create()
-    return cart    
-
-
-
-
-def add_cart(request,id):
-    product = Product.objects.get(id=id)
-    try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-    except Cart.DoesNotExist:
-        cart = Cart.objects.create(
-            cart_id = _cart_id(request)
-        ) 
-        cart.save()   
-
-    try:
-        cart_item = CartItem.objects.get(product=product, cart=cart)
-        cart_item.quantity += 1
-        cart_item.save()
-    except CartItem.DoesNotExist:
-        cart_item = CartItem.objects.create(
-            product = product,
-            quantity = 1,
-            cart = cart 
-
-        )
-        cart_item.save()
-    request.session['num'] ='num'
-    return redirect('cart')   
-
-
-def remove_cart(request,id):
-    cart = Cart.objects.get(cart_id=_cart_id(request))
-    product = get_object_or_404(Product, id=id)
-    cart_item = CartItem.objects.get(product=product, cart=cart)
-    if cart_item.quantity > 1:
-        cart_item.quantity -= 1
-        cart_item.save()
-    else:
-        cart_item.delete()
-    return redirect('cart')    
-
-def remove_cart_item(request, id):
-    cart = Cart.objects.get(cart_id=_cart_id(request))
-    product = get_object_or_404(Product, id=id)
-    cart_item = CartItem.objects.get(product=product,cart=cart)
-    cart_item.delete()
-    return redirect('cart')
-
-
-
-
-
-
-
-
+    return cart        
 def cart(request):
+    user=request.user
     cart_items=None
     total=0
     quantity=0
+    
     try:
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        cart_items = CartItem.objects.filter(user=user, is_active=True)
         for cart_item in cart_items:
-            total +=(cart_item.product.price * cart_item.quantity)
+            total +=(cart_item.product.newprice * cart_item.quantity)
+            sub_total = cart_item.product.newprice * cart_item.quantity
             quantity += cart_item.quantity
-
         
     except ObjectDoesNotExist:
         pass
@@ -262,8 +279,83 @@ def cart(request):
         'quantity' : quantity,
         'cart_items' : cart_items,
         }
-
     return render(request,"user/cart.html",context)
+
+
+login_required(login_url='userlogin')
+def add_cart(request):
+    id = int(request.GET['id'])
+   
+    user = request.user
+    product = Product.objects.get(id=id)
+
+    try:
+        cart_item = CartItem.objects.get(product=product, user=user)
+        cart_item.quantity += 1
+        cart_item.save()
+    except CartItem.DoesNotExist:
+        cart_item = CartItem.objects.create(
+            product = product,
+            quantity = 1,
+            user=user
+        )
+        cart_item.save()
+    request.session['num'] ='num'
+    return JsonResponse({'data':True})
+
+
+def remove_cart(request,total=0):
+    product_id = int(request.POST['product_id'])
+    cart_id = int(request.POST['cart_id'])
+    
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = CartItem.objects.get(product=product, user=request.user)
+    if cart_item.quantity > 1:
+        print('work')
+        cart_item.quantity -= 1
+        cart_item.save()
+        total += (cart_item.product.newprice * cart_item.quantity)
+    else:
+        CartItem.objects.filter(product=product,user=request.user).delete()
+    data = {'total':total,'cart_id':cart_id}
+    return JsonResponse(data)  
+
+def update_cart(request,total=0,subtotal=0):
+    cart_id = int(request.POST['cart_id'])
+    product_id = int(request.POST['pro_id'])
+    product = get_object_or_404(Product, id=product_id)
+    cart_item = CartItem.objects.get(product=product, user=request.user)
+    try:
+        cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+        for cart_item in cart_items:
+            subtotal +=(cart_item.product.newprice * cart_item.quantity-1)
+            print(subtotal)
+        cart_item = CartItem.objects.get(product=product, user=request.user)
+        cart_item.quantity += 1
+        cart_item.save()
+        total += cart_item.product.newprice * cart_item.quantity+1
+    except CartItem.DoesNotExist:
+        cart_item = CartItem.objects.create(
+            product = product,
+            quantity = 1,
+            cart = cart 
+        )
+        cart_item.save()
+    data = {'total':total,'quantity':cart_item.quantity,'cart_id':cart_id,}
+    return JsonResponse(data)
+
+def remove_cart_item(request,id):
+    CartItem.objects.filter(id=id).delete()
+    return redirect('cart')
+
+
+
+
+
+
+
+
+
 
 
 def search(request):
@@ -286,7 +378,7 @@ def address(request):
                                                                 
    
     if request.method == 'POST':
-        print('post')
+      
         
         form = AddressForm(request.POST)
         print(form)
@@ -298,10 +390,212 @@ def address(request):
             address.save()
     return redirect('checkout')
 
+def place_order(request):
+        total=0
+        quantity=0
+        
+        
+        try:
+            # cart = Cart.objects.get(cart_id=_cart_id(request))
+            cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+            for cart_item in cart_items:
+                total +=(cart_item.product.newprice * cart_item.quantity)
+                quantity += cart_item.quantity
+           
+            delivery = 100
+            grandtotal = total + delivery
+
+            request.session['grandtotal'] =  grandtotal
+            if request.session.has_key('total2'):
+                subtotal = request.session['total2'] * 100
+                print(subtotal)
+                # del request.session['total2']
+            else:
+                subtotal = grandtotal * 100
+            request.session['subtotal'] = subtotal
+            print(request.session['subtotal'])
+           
+           
+        except ObjectDoesNotExist:
+            pass
+        
+        
+        
+        try:
+            address_id =(request.POST.get('address'))
+            bill_address = Address.objects.get(id=address_id)
+        except:
+            bill_address=None
+            return redirect('checkout')
+        amount=request.session['subtotal']
+        rupee= float(amount)*100
+        order_currency = 'INR'
+        client = razorpay.Client(auth=("rzp_test_krpej6LVaGfmNT", "sPVzxFmh0PyMnAvMkXrS1Qs0"))
+        payment = client.order.create({'amount': amount, 'currency': 'INR',
+                                       'payment_capture': '1'})
+        request.session['payment_method'] = 'razorpay'                               
+        # print(request.session['payment_method']) 
+        context ={
+            'total' : total,
+            'quantity' : quantity,
+            'cart_items' : cart_items,
+            'delivery' : delivery,
+            'grandtotal' : grandtotal,
+            'subtotal': subtotal,
+            'bill_address': bill_address,
+            'amount':amount,
+            'rupee':rupee,
+            
+            }
+
     
+        return render(request,"user/placeorder.html",context)
 
 
 
+
+def razorsuccess(request,total=0):
+
+        
+        # cart = Cart.objects.get(user=request.user)
+        cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+        for cart_item in cart_items:
+            total += (cart_item.product.newprice * cart_item.quantity)
+            amount = total+100
+       
+    
+            pay_method = request.session['payment_method']
+            order = Order.objects.create(user=request.user,item=cart_item.product,price=amount,pay_method=pay_method)
+            order.save()
+            cart_item.delete()
+    
+        return render(request,"user/success.html")        
+
+
+def myorder(request):
+    user=request.user
+    order = Order.objects.filter(user=user)
+   
+   
+    context = {
+        'user': user,
+        'order' : order,
+        
+        }
+    
+    
+    return render(request,"user/myorder.html",context)
+   
+def paypal(request,total=0):
+    total=0
+    cart = Cart.objects.get(cart_id=_cart_id(request))
+    cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+    for cart_item in cart_items:
+        total += (cart_item.product.newprice * cart_item.quantity)
+    amount = total+100
+    pay_method = 'paypal'
+    order = Order.objects.create(user=request.user,item=cart_item.product,price=amount,pay_method=pay_method)
+    
+    order.save()
+    cart_item.delete()
+    return render(request,"user/success.html")
+
+
+def couponcheck(request,total=0,quantity=0):
+    if request.method == 'POST':
+        cart = Cart.objects.get(cart_id=_cart_id(request))
+        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        for cart_item in cart_items:
+            total +=(cart_item.product.newprice * cart_item.quantity)
+            quantity += cart_item.quantity
+        
+        delivery = 100
+        grandtotal = total + delivery
+        print('work')
+        coupon = request.POST['code']
+        if Coupon.objects.filter(coupon_code=coupon).exists():
+            obj = Coupon.objects.get(coupon_code=coupon)
+            dis = obj.coupon_offer
+            discount = dis*total/100
+            print(discount)
+            balance = grandtotal-discount
+            
+            request.session['total1'] = discount
+            request.session['total2'] = balance
+
+            context = {
+                'total':"% .2f" % discount,
+                'code': coupon,
+                'grandtotal': "% .2f" % balance,
+                
+            }
+            print(grandtotal)
+            return JsonResponse(context)
+        return JsonResponse("false",safe=false)    
+
+
+def editprofile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    
+    if request.method == 'POST':
+        profileform = ProfileForm(request.POST,instance = profile)
+        userform = UserForm(request.POST,instance = user)
+        print('valid check')
+        if userform.is_valid() and profileform.is_valid():
+            profileform.save()
+            userform.save()
+            return redirect('userprofile')
+        else:
+            profileform = ProfileForm(instance = profile)
+            userform = UserForm(instance = user)
+            return redirect('userprofile')
+            
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
+
+
+
+def catformal(request,id):
+    category = Category.objects.get(id=id)
+    pro = Product.objects.filter(category=category)
+    context={'pro' : pro}
+    return render(request,"user/category.html",context)   
+
+
+def brand(request,bar):
+    brand = Product.objects.filter(brand=bar)
+    
+    context={'br' : brand}
+    return render(request,"user/brand.html",context) 
+
+
+
+
+    
+# if request.method == 'POST':
+        
+#             first_name = request.POST['first_name']
+#             email = request.POST['email']
+#             username = request.POST['username']
+#             password = request.POST['password']
+        
+#             User.objects.filter(pk=user_id).update(first_name=first_name,email=email,username=username,password=password)
+            
+#             return redirect('ad_user')
+#         else:
+#             return redirect('ad_edit')
+
+
+def delete_order(request,id):
+    order = Order.objects.get(pk=id)
+    order.status = 'Cancelled'
+    order.save()
+    return redirect('/myorder')       
+    
+    
 
 
 

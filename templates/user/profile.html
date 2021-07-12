@@ -1,264 +1,411 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://fonts.googleapis.com/css?family=Roboto|Courgette|Pacifico:400,700" rel="stylesheet">
-<title>edit</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-<style>
-	body {
-		color: #999;
-		background: #e2e2e2;
-		font-family: 'Roboto', sans-serif;
-	}
-	.form-control{
-		min-height: 41px;
-		box-shadow: none;
-		border-color: #e1e1e1;
-	}
-	.form-control:focus{
-		border-color: #00cb82;
-	}	
-    .form-control, .btn{        
-        border-radius: 3px;
-    }
-	.form-header{
-		margin: -30px -30px 20px;
-		padding: 30px 30px 10px;
-		text-align: center;
-		background: #f3a109;
-		border-bottom: 1px solid #eee;
-		color: #fff;
-	}
-	.form-header h2{
-		font-size: 34px;
-		font-weight: bold;
-        margin: 0 0 10px;
-		font-family: 'Pacifico', sans-serif;
-    }
-	.form-header p{
-		margin: 20px 0 15px;
-		font-size: 17px;
-		line-height: normal;
-		font-family: 'Courgette', sans-serif;
-	}
-    .signup-form{
-		width: 390px;
-		margin: 0 auto;	
-		padding: 30px 0;	
-	}
-    .signup-form form{
-		color: #999;
-		border-radius: 3px;
-    	margin-bottom: 15px;
-        background: #f0f0f0;
-        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-        padding: 30px;
-    }
-	.signup-form .form-group{
-		margin-bottom: 20px;
-	}		
-	.signup-form label{
-		font-weight: normal;
-		font-size: 13px;
-	}
-    .signup-form input[type="checkbox"]{
-		margin-top: 2px;
-	}
-    .signup-form .btn{        
-        font-size: 16px;
-        font-weight: bold;
-		background: #00cb82;
-		border: none;
-		min-width: 200px;
-    }
-	.signup-form .btn:hover, .signup-form .btn:focus{
-		background: #00b073 !important;
-        outline: none;
-	}
-    .signup-form a{
-		color: #00cb82;		
-	}
-    .signup-form a:hover{
-		text-decoration: underline;
-	}
-</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+		href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+	<!-- <style>
+		.preview {
+		  overflow: hidden;
+		  width: 350px;
+		  height: 350px;
+		}
+    </style> -->
+
+
+	<style>
+		body {
+			margin-top: 20px;
+			color: #1a202c;
+			text-align: left;
+			background-color: #e2e8f0;
+		}
+
+		.main-body {
+			padding: 15px;
+		}
+
+		.card {
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+		}
+
+		.card {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+			word-wrap: break-word;
+			background-color: #fff;
+			background-clip: border-box;
+			border: 0 solid rgba(0, 0, 0, .125);
+			border-radius: .25rem;
+		}
+
+		.card-body {
+			flex: 1 1 auto;
+			min-height: 1px;
+			padding: 1rem;
+		}
+
+		.gutters-sm {
+			margin-right: -8px;
+			margin-left: -8px;
+		}
+
+		.gutters-sm>.col,
+		.gutters-sm>[class*=col-] {
+			padding-right: 8px;
+			padding-left: 8px;
+		}
+
+		.mb-3,
+		.my-3 {
+			margin-bottom: 1rem !important;
+		}
+
+		.bg-gray-300 {
+			background-color: #e2e8f0;
+		}
+
+		.h-100 {
+			height: 100% !important;
+		}
+
+		.shadow-none {
+			box-shadow: none !important;
+		}
+	</style>
+	<style>
+		/* The Modal (background) */
+		.modal {
+			display: none;
+			/* Hidden by default */
+			position: fixed;
+			/* Stay in place */
+			z-index: 1;
+			/* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%;
+			/* Full width */
+			height: 100%;
+			/* Full height */
+			overflow: auto;
+			/* Enable scroll if needed */
+			background-color: rgb(0, 0, 0);
+			/* Fallback color */
+			background-color: rgba(0, 0, 0, 0.4);
+			/* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto;
+			/* 15% from the top and centered */
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%;
+			/* Could be more or less, depending on screen size */
+		}
+
+		/* The Close Button */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+	</style>
 </head>
+
 <body>
-<div class="signup-form">
-    <form action="" method="POST">
-		{% csrf_token %}
-		<div class="form-header">
-			<h2>Profile</h2>
-			
-		</div>
-		
-        <div class="form-group">
-			<label>First Name</label>
-        	<input type="text" class="form-control" name="name" value="{{user.first_name}}">
-        </div>
-        <div class="form-group">
-			<label>Last Name</label>
-        	<input type="text" class="form-control" name="name" value="{{user.last_name}}">
-        </div>
-		<div class="form-group">
-			<label>Email</label>
-            <input type="email" class="form-control" name="email" value="{{user.email}}" >
-        </div>
-		<div class="form-group">
-			<label>Mobile number</label>
-            <input type="text" class="form-control" name="num" value="{{user.profile.num}}" >
-        </div>
-                      
-        
-		<!-- <div class="form-group">
-			<button href="" class="btn btn-primary btn-block btn-lg">Save</button>
-			
-				
-				<a class="btn btn-primary btn-block btn-lg" href="">Cancel</a>
-			
-		</div>	 -->
-	</form>
-	
-	
-	
-	
-</div>
-<footer id="footer"><!--Footer-->
-	<div class="footer-top">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-2">
-					<div class="companyinfo">
-						<h2><span>e</span>-ZEHAK</h2>
-						<p>Style is a way to say who you are without having to speak. — ...</p>
+
+	<div class="container">
+		<div class="main-body">
+
+			<!-- Breadcrumb -->
+			<nav aria-label="breadcrumb" class="main-breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/">Home</a></li>
+					<!-- <li class="breadcrumb-item"><a href="javascript:void(0)">User</a></li>
+				  <li class="breadcrumb-item active" aria-current="page">User Profile</li> -->
+				</ol>
+			</nav>
+			<!-- /Breadcrumb -->
+
+			<div class="row gutters-sm">
+				<div class="col-md-4 mb-3">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex flex-column align-items-center text-center">
+								<img src="{{user.profile.userimage.url}}" alt="Admin" class="rounded-circle"
+									width="150">
+								<div class="mt-3">
+									<h4>{{user.first_name}} {{user.last_name}}</h4>
+									<!-- <p class="text-secondary mb-1">Full Stack Developer</p>
+						  <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p> -->
+									<form method="POST" enctype="multipart/form-data" action="{% url 'userprofile' %}">
+										{% csrf_token %}
+										<div>{{profileform.userimage}}</div>
+										<button type="submit" class="btn btn-outline-primary"
+											id="confirm-btn">submit</button>
+									</form>
+
+									<form>
+										<div class="form-group">
+											<div style="width: 400px;" id="image-box" class="image-container"></div>
+											<button class="btn btn-outline-info m-auto" id="crop-btn"
+												style=" margin-top: 10px; " type="button">Crop</button>
+
+										</div>
+										<div class="m-auto preview"></div>
+
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
+
 				</div>
-				<!-- <div class="col-sm-7">
-					<div class="col-sm-3">
-						<div class="video-gallery text-center">
-							<a href="#">
-								<div class="iframe-img">
-									<img src="{% static 'user/images/home/iframe1.png' %}" alt="" />
+				<div class="col-md-8">
+					<div class="card mb-3">
+						<div class="card-body">
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">First Name</h6>
 								</div>
-								<div class="overlay-icon">
-									<i class="fa fa-play-circle-o"></i>
+								<div class="col-sm-9 text-secondary">
+									{{user.first_name}}
 								</div>
-							</a>
-							<p>Circle of Hands</p>
-							<h2>24 DEC 2014</h2>
-						</div>
-					</div> -->
-					
-					<!-- <div class="col-sm-3">
-						<div class="video-gallery text-center">
-							<a href="#">
-								<div class="iframe-img">
-									<img src="{% static 'user/images/home/iframe2.png' %}" alt="" />
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Last Name</h6>
 								</div>
-								<div class="overlay-icon">
-									<i class="fa fa-play-circle-o"></i>
+								<div class="col-sm-9 text-secondary">
+									{{user.last_name}}
 								</div>
-							</a>
-							<p>Circle of Hands</p>
-							<h2>24 DEC 2014</h2>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Phone</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									{{user.profile.num}}
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Email</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									{{user.email}}
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-3">
+									<h6 class="mb-0">Username</h6>
+								</div>
+								<div class="col-sm-9 text-secondary">
+									{{user.username}}
+								</div>
+							</div>
+							<hr>
+							<div class="row">
+								<div class="col-sm-12">
+									<!-- <a class="btn btn-info " target="__blank" href="">Edit</a> -->
+									<!-- Trigger/Open The Modal -->
+									<button class="btn btn-info" id="myBtn">Edit</button>
+
+									<!-- The Modal -->
+									<div id="myModal" class="modal">
+
+										<!-- Modal content -->
+										<div class="modal-content">
+											<span class="close">&times;</span>
+											<form action="{% url 'editprofile' %}" method="POST">
+												{% csrf_token %}
+												<div class="row col-12">
+													<div class="form-group col-md-6">
+														<label for="email">First Name:</label>
+														{{userform.first_name}}
+
+													</div>
+													<div class="form-group col-md-6">
+														<label for="pwd">Last Name:</label>
+														{{userform.last_name}}
+													</div>
+												</div>
+												<div class="row col-12">
+													<div class="form-group col-md-6">
+														<label for="pwd">Phone:</label>
+														{{profileform.num}}
+													</div>
+													<div class="form-group col-md-6">
+														<label for="pwd">Email:</label>
+														{{userform.email}}
+													</div>
+												</div>
+												<div class="row col-12">
+													<div class="form-group col-md-6">
+														<label for="pwd">Username:</label>
+														{{userform.username}}
+													</div>
+												</div>
+
+												<button style="margin-left:40px" type="submit"
+													class="btn btn-primary">Submit</button>
+											</form>
+										</div>
+
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					
-					<div class="col-sm-3">
-						<div class="video-gallery text-center">
-							<a href="#">
-								<div class="iframe-img">
-									<img src="{% static 'user/images/home/iframe3.png' %}" alt="" />
-								</div>
-								<div class="overlay-icon">
-									<i class="fa fa-play-circle-o"></i>
-								</div>
-							</a>
-							<p>Circle of Hands</p>
-							<h2>24 DEC 2014</h2>
-						</div>
-					</div>
-					
-					<div class="col-sm-3">
-						<div class="video-gallery text-center">
-							<a href="#">
-								<div class="iframe-img">
-									<img src="{% static 'user/images/home/iframe4.png' %}" alt="" />
-								</div>
-								<div class="overlay-icon">
-									<i class="fa fa-play-circle-o"></i>
-								</div>
-							</a>
-							<p>Circle of Hands</p>
-							<h2>24 DEC 2014</h2>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3">
-					<div class="address">
-						<img src="{% static 'user/images/home/map.png' %}" alt="" />
-						<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
-					</div>
+
+
+
+
+
 				</div>
 			</div>
-		</div>
-	</div> -->
-	
-	<div class="footer-widget">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-2">
-					<div class="single-widget">
-						<h2>Service</h2>
-						<ul class="nav nav-pills nav-stacked">
-							<li><a href="#">Online Help</a></li>
-							<li><a href="#">Contact Us</a></li>
-							<li><a href="#">Order Status</a></li>
-							<li><a href="#">Change Location</a></li>
-							
-						</ul>
-					</div>
-				</div>
-				
-				<div class="col-sm-2">
-					<div class="single-widget">
-						<h2>Further info</h2>
-						<ul class="nav nav-pills nav-stacked">
-							<li><a href="#">Home</a></li>
-							<li><a href="#">About</a></li>
-							<li><a href="#">shop Location</a></li>
-							<li><a href="#">contactinfo</a></li>
-							
-						</ul>
-					</div>
-				</div>
-				<div class="col-sm-3 col-sm-offset-1">
-					<div class="single-widget">
-						<h2>About Us</h2>
-						<p style="color:#B3B3AD;">We are the best online sellers of women dress in india.We have variety of collections and different categories.We are happy to announce that we are having a lot of satisfied customers</p>
-						
-					</div>
-				</div>
-				
-			</div>
+
 		</div>
 	</div>
-	
-	<div class="footer-bottom">
-		<div class="container">
-			<div class="row">
-				<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-				<!-- <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p> -->
-			</div>
-		</div>
-	</div>
-	
-</footer><!--/Footer-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		// Get the modal
+		var modal = document.getElementById("myModal");
+
+		// Get the button that opens the modal
+		var btn = document.getElementById("myBtn");
+
+		// Get the <span> element that closes the modal
+		var span = document.getElementsByClassName("close")[0];
+
+		// When the user clicks on the button, open the modal
+		btn.onclick = function () {
+			modal.style.display = "block";
+		}
+
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function () {
+			modal.style.display = "none";
+		}
+
+		// When the user clicks anywhere outside of the modal, close it
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
+	</script>
+	<script>
+
+		//1st crop
+
+		// image-box is the id of the div element that will store our cropping image preview
+		const imagebox = document.getElementById('image-box')
+		// crop-btn is the id of button that will trigger the event of change original file with cropped file.
+		const crop_btn = document.getElementById('crop-btn')
+		// id_image is the id of the input tag where we will upload the image
+		const input = document.getElementById('id_userimage')
+		var allowedExtensions =
+			/(\.jpg|\.jpeg|\.png|\.webp)$/i;
+
+		var filePath = input.value;
+
+		// When user uploads the image this event will get triggered
+		input.addEventListener('change', () => {
+			if (!allowedExtensions.exec(input.value)) {
+				alert('Invalid file type');
+				input.value = '';
+			}
+			else {
+				// Getting image file object from the input variable
+				const img_data = input.files[0]
+				// createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
+				// The new object URL represents the specified File object or Blob object.
+				const url = URL.createObjectURL(img_data)
+
+				// Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+				imagebox.innerHTML = `<img src="${url}" id="image" style="width:100px;">`
+
+				// Storing that cropping view image in a variable
+				const image = document.getElementById('image')
+
+				// Displaying the image box
+				document.getElementById('image-box').style.display = 'block'
+				// Displaying the Crop buttton
+				document.getElementById('crop-btn').style.display = 'block'
+				// Hiding the Post button
+				document.getElementById('confirm-btn').style.display = 'none'
+
+				// Creating a croper object with the cropping view image
+				// The new Cropper() method will do all the magic and diplay the cropping view and adding cropping functionality on the website
+				// For more settings, check out their official documentation at https://github.com/fengyuanchen/cropperjs
+				const cropper = new Cropper(image, {
+					autoCropArea: 1,
+					viewMode: 1,
+					scalable: false,
+					zoomable: false,
+					movable: false,
+					aspectRatio: 1 / 1,
+					preview: '.preview',
+					minCropBoxWidth: 10,
+					minCropBoxHeight: 10,
+				})
+
+				// When crop button is clicked this event will get triggered
+				crop_btn.addEventListener('click', () => {
+					// This method coverts the selected cropped image on the cropper canvas into a blob object
+					cropper.getCroppedCanvas().toBlob((blob) => {
+
+						// Gets the original image data
+						let fileInputElement = document.getElementById('id_userimage');
+						// Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
+						let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+						// Create a new container
+						let container = new DataTransfer();
+						// Add the cropped image file to the container
+						container.items.add(file);
+						// Replace the original image file with the new cropped image file
+						fileInputElement.files = container.files;
+
+						// Hide the cropper box
+						document.getElementById('image-box').style.display = 'none'
+						// Hide the crop button
+						document.getElementById('crop-btn').style.display = 'none'
+						// Display the Post button
+						document.getElementById('confirm-btn').style.display = 'block'
+
+					});
+
+				});
+			}
+		});
+	</script>
 </body>
+
 </html>

@@ -1,6 +1,33 @@
 from django import forms
-from .models import Address
+from .models import Address,Order,Profile,User
 
+class ProfileForm(forms.ModelForm):
+    userimage = forms.ImageField(required=False, error_messages={'invalid':("Image file only")}, widget=forms.FileInput)
+    class Meta:
+        model = Profile
+        fields = ('userimage','num')
+
+
+    def clean_num(self):
+        num = self.data.get('num')
+        if Profile.objects.filter(num=num).exists():
+            raise forms.ValidationError(
+                ("phone number already taken"),code='invalid')
+        if len(num) != 10:
+            raise forms.ValidationError(
+                ("phone number must be valid format"),code='invalid')
+        else:
+            return num
+
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name','last_name','email','username')      
+
+    def __init__(self, *args ,**kwargs):
+        super(UserForm,self).__init__(*args ,**kwargs)
 
 class AddressForm(forms.ModelForm):
     class Meta:
@@ -17,3 +44,15 @@ class AddressForm(forms.ModelForm):
 
         for field in self.fields:
             self.fields[field].widget.attrs['class']='form-control'
+
+    # def save(self,*args,)
+
+
+
+
+
+
+
+
+
+

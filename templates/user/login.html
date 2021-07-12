@@ -7,22 +7,22 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Login | E-Shopper</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet">
-    <link href="{% static 'css/price-range.css' %}" rel="stylesheet">
-    <link href="{% static 'css/animate.css' %}" rel="stylesheet">
-	<link href="{% static 'css/main.css' %}" rel="stylesheet">
-	<link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'user/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'user/css/font-awesome.min.css' %}" rel="stylesheet">
+    <link href="{% static 'user/css/prettyPhoto.css' %}" rel="stylesheet">
+    <link href="{% static 'user/css/price-range.css' %}" rel="stylesheet">
+    <link href="{% static 'user/css/animate.css' %}" rel="stylesheet">
+	<link href="{% static 'user/css/main.css' %}" rel="stylesheet">
+	<link href="{% static 'user/css/responsive.css' %}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="js/html5shiv.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->       
-    <link rel="shortcut icon" href="{% static 'images/ico/favicon.ico' %}">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'images/ico/apple-touch-icon-144-precomposed.png' %}">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'images/ico/apple-touch-icon-114-precomposed.png' %}">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'images/ico/apple-touch-icon-72-precomposed.png' %}">
-    <link rel="apple-touch-icon-precomposed" href="{% static 'images/ico/apple-touch-icon-57-precomposed.png' %}">
+    <link rel="shortcut icon" href="{% static 'user/images/ico/favicon.ico' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'user/images/ico/apple-touch-icon-144-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'user/images/ico/apple-touch-icon-114-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'user/images/ico/apple-touch-icon-72-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'user/images/ico/apple-touch-icon-57-precomposed.png' %}">
 </head><!--/head-->
 
 <body>
@@ -94,7 +94,7 @@
 								<li><a href="{% url 'cart'  %}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								{% if user.is_authenticated %}
          						
-								  <li><a href="{% url 'logout' %}">Logout</a><p style="color: orange;">{{user.username}}</p></li>
+								  <li><a href="">Logout</a><p style="color: orange;">{{user.username}}</p></li>
 								{% else %}
 								 <li><a href="userlogin"><i class="fa fa-lock"></i>Login</a></li>
 								 <li><a href="register">register</a></li>
@@ -116,8 +116,8 @@
 						<h2>Login to your account</h2>
 						<form action="logincheck" method="POST">
 							{% csrf_token %}
-							<input type="text" autocomplete="off" name="username" placeholder="Username" />
-							<input type="text" autocomplete="off" name="password" placeholder="Password" />
+							<input type="text" autocomplete="off" name="username" placeholder="Username" required=""/>
+							<input type="text" autocomplete="off" name="password" placeholder="Password" required=""/>
 							
 							<button type="submit" class="btn btn-default">Login</button>
 							
@@ -139,7 +139,7 @@
 							{% csrf_token %}
 							<h2 class="text-center"> OTP Log in</h2>       
 							<div class="form-group">
-								<input type="text" class="form-control" placeholder="Enter Mobilenumber" name="num" required="required">
+								<input type="text" class="form-control" placeholder="+91 |Enter Mobilenumber" name="num" required="required">
 							</div>
 							<!-- <div class="form-group">
 								<input type="password" class="form-control" placeholder="Password" required="required">
@@ -293,11 +293,11 @@
 	
 
   
-    <script src="{% static 'js/jquery.js' %}"></script>
-	<script src="{% static 'js/price-range.js' %}"></script>
-    <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script>
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'user/js/jquery.js' %}"></script>
+	<script src="{% static 'user/js/price-range.js' %}"></script>
+    <script src="{% static 'user/js/jquery.scrollUp.min.js' %}"></script>
+	<script src="{% static 'user/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'user/js/jquery.prettyPhoto.js' %}"></script>
+    <script src="{% static 'user/js/main.js' %}"></script>
 </body>
 </html>

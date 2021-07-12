@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,22 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+<link href="{% static 'user/css/bootstrap.min.css' %}" rel="stylesheet">
+<link href="{% static 'user/css/font-awesome.min.css' %}" rel="stylesheet">
+<link href="{% static 'user/css/prettyPhoto.css' %}" rel="stylesheet">
+<link href="{% static 'user/css/price-range.css' %}" rel="stylesheet">
+<link href="{% static 'user/css/animate.css' %}" rel="stylesheet">
+<link href="{% static 'user/css/main.css' %}" rel="stylesheet">
+<link href="{% static 'user/css/responsive.css' %}" rel="stylesheet">
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<script src="js/respond.min.js"></script>
+<![endif]-->       
+<link rel="shortcut icon" href="{% static 'user/images/ico/favicon.ico' %}">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'user/images/ico/apple-touch-icon-144-precomposed.png' %}">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'user/images/ico/apple-touch-icon-114-precomposed.png' %}">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'user/images/ico/apple-touch-icon-72-precomposed.png' %}">
+<link rel="apple-touch-icon-precomposed" href="{% static 'user/images/ico/apple-touch-icon-57-precomposed.png' %}">
 <style>
 	.login-form {
 		width: 340px;
@@ -30,9 +47,195 @@
         font-size: 15px;
         font-weight: bold;
     }
-</style>
+   
+		.dropdown {
+		  position: relative;
+		  display: inline-block;
+		}
+		
+		.dropdown-content {
+		  display: none;
+		  position: absolute;
+		  background-color: #f9f9f9;
+		  min-width: 160px;
+		  box-shadow: 0px 8px 16px 0px 
+		  padding: 12px 16px;
+		  z-index: 1;
+		}
+		
+		.dropdown:hover .dropdown-content {
+		  display: block;
+		}
+
+		.item {
+			position:relative;
+			padding-top:20px;
+			display:inline-block;
+		}
+		.notify-badge{
+			position: absolute;
+			right:0px;
+			top:10px;
+			background:orange;
+			text-align: center;
+			
+			color:white;
+			padding:5px 10px;
+			font-size:15px;
+			width:80px;
+			height: 50px;
+		}
+		</style>
+
 </head>
 <body>
+    <header id="header"><!--header-->
+		<div class="header_top"><!--header_top-->
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="contactinfo">
+							<ul class="nav nav-pills">
+								<!-- <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="social-icons pull-right">
+							<ul class="nav navbar-nav">
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+							</ul> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header_top-->
+		
+		<div class="header-middle"><!--header-middle-->
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4 clearfix">
+						<div class="logo pull-left">
+							<a href=""><img src="{% static 'user/images/home/zehak.jpeg' %}"alt="" /></a>
+						</div>
+						
+						<div class="btn-group pull-right clearfix">
+							<!-- <div class="btn-group">
+								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+									USA
+									<span class="caret"></span>
+								</button>
+								 <ul class="dropdown-menu">
+									<li><a href="">Canada</a></li>
+									<li><a href="">UK</a></li>
+								</ul> -->
+							<!-- </div> --> 
+							
+							<div class="btn-group">
+								<!-- <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
+									DOLLAR
+									<span class="caret"></span>
+								</button> -->
+								<!-- <ul class="dropdown-menu">
+									<li><a href="">Canadian Dollar</a></li>
+									<li><a href="">Pound</a></li>
+								</ul> -->
+							</div>
+						</div>
+					</div>
+					<div class="col-md-8 clearfix">
+						<div class="shop-menu clearfix pull-right">
+							<ul class="nav navbar-nav">
+								<!-- <li class="dropdown"><a href=""><i class="fa fa-user"> Account</i>
+								
+									<ul style="background: rgba(253, 253, 253, 0.178); box-shadow: none;" class="sub-menu ">
+                                        <li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'userprofile' %}">My profile</a></li><br>
+										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'myorder' %}">My orders</a></li><br>
+										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="">settings</a></li> 
+										 
+                                    </ul> 
+								
+								
+								</a>
+								</li> -->
+								
+								
+								<li><a href="{% url 'cart'  %}"><i class="fa fa-shopping-cart"></i> Cart
+									
+									<span class='badge badge-warning' id='lblCartCount'>{{ cart_count }}</span>
+								</a></li>
+								{% if user.is_authenticated %}
+         						
+								  <li><a href="{% url 'logout' %}">Logout</a><p style="color: orange;">{{user.username}}</p></li>
+								{% else %}
+								 <li><a href="userlogin"><i class="fa fa-lock"></i>Login</a></li>
+								 <li><a href="register">register</a></li>
+ 								<!-- <li><a href="/register">Register</a></li> -->
+								{% endif %}
+								<!-- <li><a href="{% url 'register' %}"><i class="fa fa-lock"></i> Login</a></li> -->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/header-middle-->
+	
+		<div class="header-bottom"><!--header-bottom-->
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-9">
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+								<span class="sr-only">Toggle navigation</span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+							</button>
+						</div>
+						<div class="mainmenu pull-left">
+							<ul class="nav navbar-nav collapse navbar-collapse">
+								<li><a href="index.html" class="active">Home</a></li>
+								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                                    <!-- <ul role="menu" class="sub-menu">
+                                        <li><a href="shop.html">Products</a></li>
+										<li><a href="product-details.html">Product Details</a></li> 
+										<li><a href="checkout.html">Checkout</a></li> 
+										<li><a href="cart.html">Cart</a></li> 
+										<li><a href="login.html">Login</a></li> 
+                                    </ul> -->
+                                </li> 
+								<!-- <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                         <li><a href="blog.html">Blog List</a></li>
+										<li><a href="blog-single.html">Blog Single</a></li> -->
+                                    <!-- </ul> -->
+                                <!-- </li>  -->
+								<!-- <li><a href="404.html">404</a></li> -->
+								<li><a href="contact-us.html">Contact</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<form action="{% url 'search' %}" method="GET">
+						<div><span>
+							<input type="text" name="keyword" placeholder="Search"/>
+						
+						<button type="submit">
+							<i class="fa fa-search" aria-hidden="true"></i>
+						</button>
+					</span>
+					</div>
+					</form>
+					</div>
+				</div>
+			</div>
+		</div><!--/header-bottom-->
+	</header>
 <div class="login-form">
     <form action="verify" method="post">
         {% csrf_token %}

@@ -28,6 +28,48 @@
 	<link rel=" apple-touch-icon-precomposed" href="{% static 'user/images/ico/apple-touch-icon-57-precomposed.png' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/jquery.exzoom.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'user/css/style.css' %}">
+	<style>
+		.dropbtn {
+		  background-color: orange;
+		  color: white;
+		  padding: 16px;
+		  font-size: 16px;
+		  border: none;
+		  cursor: pointer;
+		 
+		}
+		
+		.dropdown {
+		  position: relative;
+		  display: inline-block;
+		}
+		
+		.dropdown-content {
+		  display: none;
+		  position: absolute;
+		  background-color: #f9f9f9;
+		  min-width: 160px;
+		  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		  z-index: 1;
+		}
+		
+		.dropdown-content a {
+		  color: black;
+		  padding: 12px 16px;
+		  text-decoration: none;
+		  display: block;
+		}
+		
+		.dropdown-content a:hover {background-color: #f1f1f1}
+		
+		.dropdown:hover .dropdown-content {
+		  display: block;
+		}
+		
+		.dropdown:hover .dropbtn {
+		  background-color: lightskyblue;
+		}
+		</style>
 </head>
 <!--/head-->
 
@@ -59,7 +101,9 @@
 							<ul class="nav navbar-nav">
 								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
 
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="{% url 'cart' %}"><i class="fa fa-shopping-cart"></i> Cart
+									<span class='badge badge-warning' id='lblCartCount'>{{ cart_count }}</span>
+								</a></li>
 								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
@@ -110,6 +154,7 @@
 									</button>
 								</span>
 							</div>
+							</form>
 					</div>
 				</div>
 			</div>
@@ -230,35 +275,43 @@
 
 
                  
-
+                              
 						<div class="col-md-6">
 							<div class="product-information">
 								<!--/product-information-->
+							
+									
 								<!-- <img src="{% static 'user/images/product-details/new.jpg' %}" class="newarrival" alt="" /> -->
 								<h2 style="color: orange;">{{ product.brand }}</h2>
 								<p>{{ product.productname }}</p>
 
 								<span>
-									<span>RS {{ product.price}} </span>
+									<span>RS {{ product.newprice}} </span>
+                                </span>
+								<h6>select size</h6>
+								<div class="dropdown">
+									<!-- <button  class="dropbtn">size</button> -->
+									<select name="size" class="dropbtn" class="dropdown-content" required>
+										
+										<option value="xs">XS</option>
+										<option value="s">S</option>
+										
+									</select>
+								  </div>
 
-
-
-
-								</span>
-
-
-								<p><b>Select size:</b>{%for pro in product.size.all %}
-									{{ pro.size }}
-									{% endfor %}</p><br>
-								<span>
-									<button style="p-5: 70px;" class="btn btn-fefault cart"><a
-											href="{% url 'add_cart' product.id %}">
+								
+								<br>
+								  	<div style="padding-top: 20px;">
+									<button class="btn btn-fefault cart" id="add-btn" style=" margin-left:0;">
+											
 											<i class="fa fa-shopping-cart"></i>
 											Add to cart</a>
 									</button>
+								</div>
 								</span> <br>
-								<img src="{% static 'user/images/product-details/rating.png' %}" alt="" />
+								<!-- <img src="{% static 'user/images/product-details/rating.png' %}" alt="" /> -->
 								<!-- <a href=""><img src="{% static 'user/images/product-details/share.png' %}" class="share img-responsive"  alt="" /></a> -->
+								
 							</div>
 							<!--/product-information-->
 						</div>
@@ -268,23 +321,23 @@
 					<div class="category-tab shop-details-tab">
 						<!--category-tab-->
 						<div class="col-sm-12">
-							<ul class="nav nav-tabs">
+							<!-- <ul class="nav nav-tabs">
 
 								<li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
-							</ul>
+							</ul> -->
 						</div>
 						<div class="tab-content">
 
 
-							<div class="tab-pane fade active in" id="reviews">
+							<!-- <div class="tab-pane fade active in" id="reviews">
 								<div class="col-sm-12">
 									<!-- <ul>
 										<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
 										<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
 										<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li> -->
-									</ul>
+									<!-- </ul> -->
 									<!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p> -->
-									<p><b>Write Your Review</b></p>
+									<!-- <p><b>Write Your Review</b></p>
 
 									<form action="#">
 										<span>
@@ -299,15 +352,15 @@
 										</button>
 									</form>
 								</div>
-							</div>
+							</div> -->
 
 						</div>
 					</div>
 					<!--/category-tab-->
 
-					<div class="recommended_items">
+					<!-- <div class="recommended_items">
 						<!--recommended_items-->
-						<h2 class="title text-center">recommended items</h2>
+						<!-- <h2 class="title text-center">recommended items</h2>
 
 						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
 							<div class="carousel-inner">
@@ -319,7 +372,7 @@
 													<img src="{% static 'user/images/home/recommend1.jpg' %}" alt="" />
 													<h2>$56</h2>
 													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i
+													<button  type="button" class="btn btn-default add-to-cart"><i
 															class="fa fa-shopping-cart"></i>Add to cart</button>
 												</div>
 											</div>
@@ -403,7 +456,7 @@
 								<i class="fa fa-angle-right"></i>
 							</a>
 						</div>
-					</div>
+					</div> --> 
 					<!--/recommended_items-->
 
 				</div>
@@ -490,6 +543,8 @@
 
 	<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 	<script src="{% static 'user/js/jquery.exzoom.js' %}"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 	<script type="text/javascript">
 		$(function () {
 
@@ -500,6 +555,26 @@
 
 		});
 
+	</script>
+
+	<!-- add to cart -->
+	<script>
+		$(document).on("click","#add-btn",function(){
+		  var id = '{{ product.id }}'  
+		  $.ajax({
+			url:"{% url 'add_cart'%}",
+			data:{
+				id: id,
+			},
+			success:function(json){
+				var count = "{{cart_count}}"
+				
+				/*swal("{{product.productname|title}}","Added To Cart!","success");*/
+				document.getElementById('lblCartCount').textContent = count
+				window.location.reload()
+			}
+		  })
+		})
 	</script>
 </body>
 

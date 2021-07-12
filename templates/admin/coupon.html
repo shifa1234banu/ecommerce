@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿{% load static %}
+<!DOCTYPE html> 
 <!-- 
 Template Name: BRILLIANT Bootstrap Admin Template
 Version: 4.5.6
@@ -7,19 +8,22 @@ Website: http://www.webthemez.com/
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
+      <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta content="" name="description" />
     <meta content="webthemez" name="author" />
-    <title>Bootstrap HTML5 Admin Template : Master - WebThemez</title>
+    <title>Bootstrap Admin Template : BRILLIANT - WebThemez</title>
 	<!-- Bootstrap Styles-->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <link href="{% static 'admin/css/bootstrap.css' %}" rel="stylesheet" />
      <!-- FontAwesome Styles-->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <link href="{% static 'admin/css/font-awesome.css' %}" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+    <link href="{% static 'admin/js/morris/morris-0.4.3.min.css' %}" rel="stylesheet" />
         <!-- Custom Styles-->
-    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+    <link href="{% static 'admin/css/custom-styles.css' %}" rel="stylesheet" />
      <!-- Google Fonts-->
    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+   <script src="https://kit.fontawesome.com/06a0807a55.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -31,214 +35,27 @@ Website: http://www.webthemez.com/
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><strong><i class="icon fa fa-plane"></i> BRILLIANT</strong></a>
+                <a class="navbar-brand" href=""><strong> Zehak</strong></a>
 				<div id="sideNav" href="">
 		<i class="fa fa-bars icon"></i> 
 		</div>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Doe</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Today</em>
-                                    </span>
-                                </div>
-                                <div>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem Ipsum has been the industry's standard dummy text ever since an kwilnw...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                                </div>
-                                <div>Lorem Ipsum has been the industry's standard dummy text ever since the...</div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>Read All Messages</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-messages -->
-                </li>
+                
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-tasks">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 1</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 2</strong>
-                                        <span class="pull-right text-muted">28% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100" style="width: 28%">
-                                            <span class="sr-only">28% Complete</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 3</strong>
-                                        <span class="pull-right text-muted">60% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <p>
-                                        <strong>Task 4</strong>
-                                        <span class="pull-right text-muted">85% Complete</span>
-                                    </p>
-                                    <div class="progress progress-striped active">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%">
-                                            <span class="sr-only">85% Complete (danger)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Tasks</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-tasks -->
-                </li>
+               
                 <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-comment fa-fw"></i> New Comment
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-tasks fa-fw"></i> New Task
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 min</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
+                
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                         <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                        </li>
+                        
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="{% url 'ad_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -252,14 +69,14 @@ Website: http://www.webthemez.com/
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a href="{% url 'adhome' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
-                        <a href="user.html"><i class="fa fa-desktop"></i> user management</a>
+                        <a href="{% url 'user' %}"><i class="fa fa-desktop"></i> User management</a>
                     </li>
 					 
 					 <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> Product management<span class="fa arrow"></span></a>
+                        <a href="{% url 'product' %}"><i class="fa fa-sitemap"></i> product management<span class="fa arrow"></span></a>
                         <!-- <ul class="nav nav-second-level">
                             <li>
                                 <a href="addnew.html">Add new</a>
@@ -270,18 +87,18 @@ Website: http://www.webthemez.com/
 							</ul> -->
 						</li>	
                     <li>
-                        <a href="tab-panel.html"><i class="fa fa-qrcode"></i> Tabs & Panels</a>
+                        <a href="{% url 'category' %}"><i class="fa fa-qrcode"></i> Category management</a>
                     </li>
                     
                     <li>
-                        <a href="category.html"><i class="fa fa-table"></i> Category management</a>
+                        <a href="{% url 'order' %}"><i class="fa fa-table"></i> Order management</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="form.html"><i class="fa fa-edit"></i> Forms </a>
-                    </li>
+                    </li> -->
 
 
-                    <li>
+                    <!-- <li>
                         <a href="#"><i class="fa fa-sitemap"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
@@ -307,9 +124,13 @@ Website: http://www.webthemez.com/
 
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li>
-                        <a class="active-menu" href="coupon.html"><i class="fa fa-fw fa-file"></i> Coupon management</a>
+                        <a class="active-menu" href="{% url 'coupon' %}"><i class="fa fa-fw fa-file"></i> Coupon management</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'sale' %}"><i class="fa fa-fw fa-file"></i> Sales report</a>
                     </li>
                 </ul>
 
@@ -320,91 +141,149 @@ Website: http://www.webthemez.com/
         <div id="page-wrapper">
 		  <div class="header"> 
                         <h1 class="page-header">
-                            coupons <small></small>
+                             product <small>product management</small>
                         </h1>
-						<ol class="breadcrumb">
-					  <li><a href="#">Home</a></li>
-					  <li><a href="#">Empty</a></li>
-					  <li class="active">Data</li>
-					</ol> 
+                        <button type="button">
+                            <a href="{% url 'add_coupon' %}">Add Coupon</a>
+                        </button>
+                        <!-- <button type="button">
+                            <a href="{% url 'addsize' %}">Add size</a>
+                        </button> -->
+						
 									
-        </div>
-        <div id="page-inner"> 
-               
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                             Advanced Tables
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>user_id</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Username</th>
-                                            <th>Mobile no</th>
-                                            <th>Actions</th>
-                                            
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="odd gradeX">
-                                            <td>1</td>
-                                            <td>shifa</td>
-                                            <td>shifa@gmail.com</td>
-                                            <td class="center">shifu</td>
-                                            <td class="center">8547598364</td>
-                                            <td><i class="fa fa-ban" aria-hidden="true"></i></td>
-                                        </tr>
-                                        <tr class="even gradeC">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 5.0</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">5</td>
-                                            <td class="center">C</td>
-                                            <td><i class="fa fa-ban" aria-hidden="true"></i></td>
-                                        </tr>
-                                        <tr class="odd gradeA">
-                                            <td>Trident</td>
-                                            <td>Internet Explorer 5.5</td>
-                                            <td>Win 95+</td>
-                                            <td class="center">5.5</td>
-                                            <td class="center">A</td>
-                                            <td><i class="fa fa-ban" aria-hidden="true"></i></td>
-                                        </tr>
-                                        
-                                        
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                        </div>
-                    </div>
-           
-            </div>
+		</div>
             <div id="page-inner"> 
-				 <footer><p>All right reserved. Template by: <a href="http://webthemez.com">WebThemez.com</a></p></footer>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Advanced Tables -->
+                        <div class="panel panel-default">
+                            
+                            <div class="panel-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Coupon code</th>
+                                                <th>Offer</th>
+                                                <th>Created_date</th>
+                                                <th>Status</th>
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for coupon in coupons %}
+                                            <tr class="odd gradeX">
+                                                <td>{{ forloop.counter }}</td>
+                                            
+                                                <td>{{ coupon.coupon_code }}</td>
+                                                <td>{{ coupon.coupon_offer }}</td>
+                                                <td>{{ coupon.created }}</td>
+                                                <td>{{ coupon.status }}</td>
+                                                
+                                                
+                                                
+                                                
+
+                                
+                                                
+                                                
+                                            </tr>
+                                            {% endfor %}
+                                            
+                                            
+                                            
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                            </div>
+                            <!-- Button trigger modal -->
+                            
+
+                    
+                      
+                               
+                
+           </div>
+           <!-- Advanced Tables -->
+           <div class="panel panel-default">
+                <div><h1>Category offer</h1></div>            
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Category</th>
+                                <th>Offer</th>
+                                
+                                <th style="width: 100px;"></th>
+                                
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in categories %}
+                            <tr class="odd gradeX">
+                                <td>{{ forloop.counter }}</td>
+                            
+                                <td>{{ i.category_name }}</td>
+                                <td>{{ i.offer }}</td>
+                                
+                                <td><a href="{% url 'category_offer' i.id %}"><i class="fas fa-plus-circle"></i></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                    <!-- <i class="fas fa-edit"></i> -->
+                               
+
+ 
+                            </tr>
+                            {% endfor %}
+                           
+                            
+                            
+                            
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <!-- Button trigger modal -->
+            
+
+    
+      
+               
+
+</div>
+                 
+                         
+                
+                
+           </div>
+                 <!-- /. ROW  -->
+				 
 				</div>
              <!-- /. PAGE INNER  -->
             </div>
          <!-- /. PAGE WRAPPER  -->
         </div>
+
+        
      <!-- /. WRAPPER  -->
     <!-- JS Scripts-->
     <!-- jQuery Js -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
+    <script src="{% static 'admin/js/jquery-1.10.2.js' %}"></script>
       <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="{% static 'admin/js/bootstrap.min.js' %}"></script>
     <!-- Metis Menu Js -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
+    <script src="{% static 'admin/js/jquery.metisMenu.js' %}"></script>
+     <!-- Morris Chart Js -->
+     <script src="{% static 'admin/js/morris/raphael-2.1.0.min.js' %}"></script>
+    <script src="{% static 'admin/js/morris/morris.js' %}"></script>
       <!-- Custom Js -->
-    <script src="assets/js/custom-scripts.js"></script>
+    <script src="{% static 'admin/js/custom-scripts.js' %}"></script>
     
    
 </body>

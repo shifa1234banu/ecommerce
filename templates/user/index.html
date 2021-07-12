@@ -34,13 +34,32 @@
 		  position: absolute;
 		  background-color: #f9f9f9;
 		  min-width: 160px;
-		  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		  box-shadow: 0px 8px 16px 0px 
 		  padding: 12px 16px;
 		  z-index: 1;
 		}
 		
 		.dropdown:hover .dropdown-content {
 		  display: block;
+		}
+
+		.item {
+			position:relative;
+			padding-top:20px;
+			display:inline-block;
+		}
+		.notify-badge{
+			position: absolute;
+			right:0px;
+			top:10px;
+			background:orange;
+			text-align: center;
+			
+			color:white;
+			padding:5px 10px;
+			font-size:15px;
+			width:80px
+			height: 50px;
 		}
 		</style>
 </head><!--/head-->
@@ -78,7 +97,7 @@
 				<div class="row">
 					<div class="col-md-4 clearfix">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="{% static 'user/images/home/zehak.jpeg' %}"alt="" /></a>
+							<a href=""><img src="{% static 'user/images/home/zehak.jpeg' %}"alt="" /></a>
 						</div>
 						
 						<div class="btn-group pull-right clearfix">
@@ -108,10 +127,24 @@
 					<div class="col-md-8 clearfix">
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="{% url 'userprofile' %}"><i class="fa fa-user"> Account</i></a></li>
+								<li class="dropdown"><a href=""><i class="fa fa-user"> Account</i>
+								
+									<ul style="background: rgba(253, 253, 253, 0.178); box-shadow: none;" class="sub-menu ">
+                                        <li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'userprofile' %}">My profile</a></li><br>
+										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'myorder' %}">My orders</a></li><br>
+										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="">settings</a></li> 
+										 
+                                    </ul> 
 								
 								
-								<li><a href="{% url 'cart'  %}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								</a>
+								</li>
+								
+								
+								<li><a href="{% url 'cart'  %}"><i class="fa fa-shopping-cart"></i> Cart
+									
+									<span class='badge badge-warning' id='lblCartCount'>{{ cart_count }}</span>
+								</a></li>
 								{% if user.is_authenticated %}
          						
 								  <li><a href="{% url 'logout' %}">Logout</a><p style="color: orange;">{{user.username}}</p></li>
@@ -173,6 +206,7 @@
 						</button>
 					</span>
 					</div>
+					</form>
 					</div>
 				</div>
 			</div>
@@ -218,7 +252,8 @@
 									<img src="{% static 'user/images/home/top_1.webp' %}" class="girl img-responsive" alt="" />
 									<!-- <img src="{% static 'user/images/home/pricing.png' %}"  class="pricing" alt="" /> -->
 								 </div>
-							 </div> -->
+							 </div> 
+
  							
 							 <div class="item"> 
 								<div class="col-sm-6">
@@ -256,61 +291,23 @@
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>Category</h2>
+						{% for i in categories %}
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
 							<div class="panel panel-default">
-								<div class="panel-heading">
+								<div style="background-color:orange;" class="panel-heading">
 									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
-											<span class="badge pull-right"></span>
-											party wear
-										</a>
-									</h4>
-								</div>
-								<!-- <div id="sportswear" class="panel-collapse collapse"> -->
-									<!-- <div class="panel-body">
-										<ul>
-											<li><a href="#">Nike </a></li>
-											<li><a href="#">Under Armour </a></li>
-											<li><a href="#">Adidas </a></li>
-											<li><a href="#">Puma</a></li>
-											<li><a href="#">ASICS </a></li>
-										</ul>
-									</div> -->
-								<!-- </div> -->
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#mens">
-											<span class="badge pull-right"></i></span>
-											casual wear
+										<a  href="{% url 'catformal' i.id %}">
+											
+											{{ i.category_name }}
 										</a>
 									</h4>
 								</div>
 								
 							</div>
 							
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#womens">
-											<span class="badge pull-right"></i></span>
-											formal wear
-										</a>
-									</h4>
-								</div>
-								<div id="womens" class="panel-collapse collapse">
-									<!-- <div class="panel-body">
-										<ul>
-											<li><a href="#">Fendi</a></li>
-											<li><a href="#">Guess</a></li>
-											<li><a href="#">Valentino</a></li>
-											<li><a href="#">Dior</a></li>
-											<li><a href="#">Versace</a></li>
-										</ul>
-									</div> -->
-								</div>
-							</div>
+							
+							
+							
 							<!-- <div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="#">Kids</a></h4>
@@ -346,30 +343,22 @@
 									<h4 class="panel-title"><a href="#">Shoes</a></h4>
 								</div>
 							</div> -->
-						</div><!--/category-products-->
+						</div>
+						{% endfor %} <!--/category-products-->
 					
 						<div class="brands_products"><!--brands_products-->
 							<h2>Brands</h2>
+							{% for i in brands %}
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
-									<li><a href="#"> <span class="pull-right"></span>veromoda</a></li>
-									<li><a href="#"> <span class="pull-right"></span>H&M</a></li>
-									<li><a href="#"> <span class="pull-right"></span>Max</a></li>
-									<li><a href="#"> <span class="pull-right"></span>Master harbour</a></li>
-									<li><a href="#"> <span class="pull-right"></span>allen solly</a></li>
-									<li><a href="#"> <span class="pull-right"></span>sassfras</a></li>
-									<li><a href="#"> <span class="pull-right"></span>bhama</a></li>
+									<li><a href="{% url 'brand' i.brand %}"> <span class="pull-right"></span>{{i.brand}}</a></li>
+									
 								</ul>
 							</div>
+							{% endfor %}
 						</div><!--/brands_products-->
 						
-						<div class="price-range"><!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well text-center">
-								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
-								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
-							</div>
-						</div><!--/price-range-->
+						
 						
 						<div class="shipping text-center"><!--shipping-->
 							<img src="{% static 'user/images/home/shipping.jpg' %}" alt="" />
@@ -382,21 +371,35 @@
 					<div class="features_items"><!--features_items-->
 						<!-- <h2 class="title text-center">Features Items</h2> -->
 						{% for product in products %}
-						<a href="{% url 'productdetails' product.id %}"><div class="col-sm-4">
+						<div class="col-sm-4">
 							<div class="product-image-wrapper">
-								<div class="single-products">
+								<div class="single-products" class="item">
 										<div class="productinfo text-center">
+											{% if product.offers > product.category.offer %}
+                                        <span class="notify-badge">{{product.offers}}% OFF</span>
+                                        {% elif product.offers < product.category.offer %}
+                                        <span class="notify-badge">{{product.category.offer}}% OFF</span>
+                                        {% elif  product.price == product.newprice %}
+                                        {% else %}
+                                        <span class="notify-badge">{{product.category.offer}}% OFF</span>
+                                        {% endif %}
 											<img src="{{ product.image1.url}}" alt="" />
-											<h2>Rs.{{ product.newprice }}</h2><p>{{ product.price }}</p>
+											<h2>Rs.{{ product.newprice }}</h2><p><del>{{ product.price }}</del></p>
 											<h4>{{ product.brand }}</h4>
-											<p>{{ product.productname }}</p>
-											<a href="{% url 'add_cart' product.id %}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+											<p><a href="{% url 'productdetails' product.id %}">{{ product.productname }}</a></p>
+											{% if request.user.is_authenticated %}
+											<button value="{{product.id}}" class="add-button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+											{% else %}
+											<a href="{% url 'userlogin' %}"><button  class="add-button" class="btn btn-default "><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											{% endif %}
 										</div>
+										
 										<!-- <div class="product-overlay">
 											<div class="overlay-content">
 												<h2>$56</h2>
 												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>
+												</a>
 											</div>
 										</div> -->
 								</div>
@@ -407,7 +410,7 @@
 									</ul>
 								</div> -->
 							</div>
-						</div></a>
+						</div>
 						{% endfor %}
 						
 						</div>
@@ -442,70 +445,13 @@
 					</div><!--features_items-->
 					
 					<div class="category-tab"><!--category-tab-->
-						<div class="col-sm-12">
-							<ul class="nav nav-tabs">
-								<li class="active"><a href="#party" data-toggle="tab">party wear</a></li>
-								<li><a href="#casual" data-toggle="tab">casual wear</a></li>
-								<li><a href="#formal" data-toggle="tab">formal wear</a></li>
-								<!-- <li><a href="#kids" data-toggle="tab">Kids</a></li>
-								<li><a href="#poloshirt" data-toggle="tab">Polo shirt</a></li> -->
-							</ul>
-						</div>
+						
 						<div class="tab-content">
 							<div class="tab-pane fade active in" id="party" >
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="{% static 'user/images/home/party 1.webp' %}" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="{% static 'user/images/home/party 2.webp' %}" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="{% static 'user/images/home/party 3.webp' %}" alt="" />
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-											
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-3">
-									<div class="product-image-wrapper">
-										<div class="single-products">
-											<div class="productinfo text-center">
-												<img src="{% static 'user/images/home/party 4.webp' %}" alt="" />
-												
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-											</div>
-											
-										</div>
-									</div>
-								</div>
+								
+								
+								
+								
 							</div>
 							
 							<div class="tab-pane fade" id="casual" >
@@ -585,7 +531,7 @@
 												<img src="{{ product.image1.url }}" alt="" />
 												<h2>$56</h2>
 												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+												<button id="" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>button
 											</div>
 											
 										</div>
@@ -827,7 +773,7 @@
 								<i class="fa fa-angle-right"></i>
 							  </a>			
 						</div> -->
-					<!-- </div>/recommended_items --> -->
+					<!-- </div>/recommended_items -->
 					
 				</div>
 			</div>
@@ -973,6 +919,27 @@
 	<script src="{% static 'user/js/jquery.scrollUp.min.js' %}"></script>
 	<script src="{% static 'user/js/price-range.js' %}"></script>
     <script src="{% static 'user/js/jquery.prettyPhoto.js' %}"></script>
-    <script src="{% static 'user/js/main.js' %}"></script>
+	<script src="{% static 'user/js/main.js' %}"></script>
+	<!-- add cart -->
+	<script>
+		$(document).on("click",".add-button",function(){
+		  var id = $(this).val() 
+		  console.log(id) 
+		  console.log('hi')
+		  $.ajax({
+			url:"{% url 'add_cart'%}",
+			data:{
+				id: id,
+			},
+			success:function(json){
+				
+				var count = "{{cart_count}}"
+			    window.location.reload()
+				swal("{{product.productname|title}}","Added To Cart!","success");
+				document.getElementById('lblCartCount').textContent = count
+			}
+		  })
+		})
+	</script>
 </body>
 </html>

@@ -1,11 +1,14 @@
 from django.shortcuts import render,redirect
-from .forms import CategoryForm,ProductForm,SizeForm
+from .forms import CategoryForm,ProductForm,SizeForm,CouponForm
 from .models import Category
 from .models import Product
 from .models import Size
+from .models import Coupon
 from django.contrib.auth.models import User,auth
-from zehak.models import Profile
-
+from zehak.models import Profile,Order
+from django.http import JsonResponse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required,user_passes_test
 
 
 
@@ -13,13 +16,63 @@ from zehak.models import Profile
 # Create your views here.
 
 
+def logincheck(request):
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+
+            user = auth.authenticate(username=username,password=password)
+            if user is not None:
+                auth.login(request, user)
+                return redirect('adhome')
+            else:
+                messages.info(request, 'invalid credentials')
+                return redirect('adlogin')
+        else:
+            return redirect('adlogin')
+
+
+
 def login(request):
-    return render(request,"admin/login.html")
+    return render(request,'admin/login.html')
 
+
+
+@login_required()
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def adhome(request):
-    return render(request,"admin/index.html")    
+    total=0
+    totalorder = Order.objects.all().count()
+    totaluser = User.objects.all().count()
+    totalproduct = Product.objects.all().count()
+    totalor = Order.objects.all()
+   
+    for i in totalor:
+        total += int(i.price)
 
 
+    order_placed = Order.objects.filter(status='Placed').count()
+    order_shipped = Order.objects.filter(status='Shipped').count() 
+    order_delivered = Order.objects.filter(status='Delivered').count()
+    
+
+
+    context ={
+        'totalorder' : totalorder,
+        'totaluser' : totaluser,
+        'totalproduct' : totalproduct,
+        'total' : total,
+        'order_placed' : order_placed,
+        'order_shipped' : order_shipped,
+        'order_delivered' : order_delivered,
+        
+    }
+    return render(request,"admin/index.html",context)        
+
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def user(request):
     
     queryset = Profile.objects.all()
@@ -28,14 +81,18 @@ def user(request):
     
 
 
-
-def logout(request):
-   
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def ad_logout(request):
         auth.logout(request)
         request.session.flush()
-        return redirect('/')
+        return redirect('adlogin')
+   
+   
         
-
+        
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def product(request):
     products = Product.objects.all()
     
@@ -43,7 +100,8 @@ def product(request):
     
 
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def addproduct(request):
 
     if request.method == 'POST':
@@ -72,7 +130,8 @@ def addproduct(request):
         return render(request,"admin/addproduct.html",context)
     
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def addsize(request):
     if request.method == 'POST':
         
@@ -92,14 +151,16 @@ def addsize(request):
 
 
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def category(request):
     
     categories = Category.objects.all()
     return render(request,"admin/category.html", {'categories' : categories})
 
     
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def addcategory(request):
    
     if request.method == 'POST':
@@ -117,13 +178,33 @@ def addcategory(request):
         context ={'form':form}
 
         return render(request,"admin/addcategory.html",context)
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def editcategory(request,id):
+    category = Category.objects.get(pk=id)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance = category)
         
+        if form.is_valid():
+            form.save()
+            print('working')
+            return redirect('category')
+
+        
+
+    else:
+        form = CategoryForm(instance = category)
+        return render(request,"admin/editcategory.html" ,{'form' : form ,'category' : category})
+
 
     
     
         
 
-    
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')   
 def editproduct(request, id):
     product = Product.objects.get(pk=id)
     if request.method == 'POST':
@@ -140,7 +221,8 @@ def editproduct(request, id):
         form = ProductForm(instance = product)
         return render(request,"admin/editproduct.html" ,{'form' : form ,'product' : product})
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def deleteproduct(request, id):
     
 
@@ -148,7 +230,8 @@ def deleteproduct(request, id):
         return render(request,'admin/productdelete.html' ,{'product' : product}) 
     
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def deletecheck(request, id):
     
 
@@ -158,7 +241,8 @@ def deletecheck(request, id):
 
 
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def blockuser(request, id):
     user=User.objects.get(pk=id)
     user.is_active = False
@@ -166,7 +250,8 @@ def blockuser(request, id):
 
     return redirect('user')
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def unblockuser(request, id):
     user=User.objects.get(pk=id)
     user.is_active = True
@@ -174,7 +259,8 @@ def unblockuser(request, id):
 
     return redirect('user')    
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def categorycheck(request, id):
     
 
@@ -182,9 +268,105 @@ def categorycheck(request, id):
         category.delete()
         return redirect('category')    
 
-
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
 def deletecategory(request, id):
     
 
         category = Category.objects.get(pk=id)
-        return render(request,'admin/categorydelete.html' ,{'category' : category})        
+        return render(request,'admin/category.html' ,{'category' : category})        
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def order(request):
+    orders =Order.objects.all()
+    context = {'orders':orders}
+    return render(request,"admin/order.html",context)       
+
+
+    
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def admin_order_status(request):
+    order_id = request.POST['order_id']
+    value = request.POST['clicked']
+    this_order = Order.objects.get(pk=order_id)
+    if request.POST['clicked'] == 'Shipped':
+        this_order.status = 'Shipped'
+        this_order.save()
+    elif request.POST['clicked'] == 'Delivered':
+        this_order.status = 'Delivered'
+        this_order.save()
+    return JsonResponse('true', safe=False)
+
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def coupon(request):
+    coupons = Coupon.objects.all()
+    categories = Category.objects.all()
+    return render(request,"admin/coupon.html",{'coupons' : coupons ,'categories' : categories})
+
+
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def add_coupon(request): 
+    if request.method == 'POST':
+
+        
+       form = CouponForm(request.POST)
+        
+       if form.is_valid():
+
+          form.save()
+          print('working')
+          return redirect('coupon')
+
+    
+    else:
+        form = CouponForm()
+        context ={'form':form}
+
+        return render(request,"admin/addcoupon.html",context)
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def category_offer(request,id):
+    cat = Category.objects.get(pk=id)
+    
+    if request.method == 'POST':
+        offer = request.POST['offer']
+        cat.offer=offer
+        cat.save()
+        return redirect('coupon')
+
+    context = {
+        'category':cat,
+    }
+    return render(request,"admin/addoffer.html")
+
+    # return render(request,"admin/addcoupon.html",context)
+
+
+@login_required(login_url='adlogin')
+@user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
+def sale(request,total=0, quantity=0, cart_items=None):
+    
+    if request.method == 'POST':
+          date_from=request.POST['datefrom']
+          date_to=request.POST['dateto']
+          order_search=Order.objects.filter(order_date__range=[date_from,date_to])
+          return render(request,'admin/sale.html',{'orders':order_search})
+    else:
+        orders = Order.objects.all()
+        return render(request, "admin/sale.html",{'orders':orders})
+        
+
+      
+

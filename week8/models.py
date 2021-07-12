@@ -6,6 +6,7 @@ from django.db import models
 class Category(models.Model):
     category_name = models.CharField(max_length=100,unique=True)
     cat_image = models.ImageField(upload_to='photos/categories',blank=True)
+    offer = models.IntegerField(default=0)
 
     def __str__(self):
         return self.category_name
@@ -22,7 +23,7 @@ class Product(models.Model):
     productname = models.CharField(max_length=50,unique=True)
     category = models.ForeignKey(Category,on_delete=models.CASCADE)
     price = models.IntegerField()
-    offers = models.IntegerField()
+    offers = models.IntegerField(default=0)
     newprice = models.IntegerField(default=0)
     size = models.ManyToManyField(Size, default='s')
     stock = models.IntegerField()
@@ -45,3 +46,13 @@ class EditProduct(models.Model):
     
     def __str__(self):
         return self.price        
+
+
+class Coupon(models.Model):
+    
+    coupon_code = models.CharField(max_length=20)
+    coupon_offer = models.IntegerField(default=0)
+    created =  models.DateField(auto_now_add=True)
+    status = models.BooleanField(default=True)
+
+

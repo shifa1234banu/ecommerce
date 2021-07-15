@@ -107,7 +107,8 @@ def addproduct(request):
     if request.method == 'POST':
         offerprice=0
         form = ProductForm(request.POST, request.FILES)
-        
+        print(form)
+
         if form.is_valid():
             form.save()
             price = form.cleaned_data.get('price')
@@ -120,6 +121,11 @@ def addproduct(request):
             product.save()
             print(product.newprice)
             return redirect('product')
+        else:
+            form = ProductForm()
+            context ={'form':form}
+            return render(request,"admin/addproduct.html",context)
+                
 
     
     else:

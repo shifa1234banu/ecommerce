@@ -82,107 +82,104 @@
 </head>
 <body>
     <div class="container">
+      <h3>Edit product</h3>
     <form method="POST"  enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="row">
-            <div class="col-25">
-              <label for="fname">Image 1</label>
-              
-            </div>
-            <div class="col-75">
-            {{form.image1}}
-            </div>
-          </div>
+       
+
+
           <div class="row">
-            <div class="col-25">
-              <label for="lname">Image 2</label>
-            </div>
-            <div class="col-75">
-              {{form.image2}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-25">
-              <label for="country">Image 3</label>
-            </div>
-            <div class="col-75">
-              {{form.image3}}
-            </div>
-            
-          </div>
-          <div class="row">
-            <div class="col-25">
-              <label for="country">Image 4</label>
-            </div>
-            <div class="col-75">
-              {{form.image4}}
-            </div>
-            
-          </div>
-          <div class="row">
-            <div class="col-25">
-              <label>Brand</label>
-            </div>
-            <div class="col-75">
-              {{ form.brand}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-25">
+            <div class="col-md-3">
               <label>Product Name</label>
             </div>
-            <div class="col-75">
+            <div class="col-md-3">
               {{ form.productname}}
             </div>
           </div>
           <div class="row">
-            <div class="col-25">
+            <div class="col-md-3">
               <label>Category</label>
             </div>
-            <div class="col-75">
+            <div class="col-md-3">
               {{ form.category}}
             </div>
           </div>
+         
           <div class="row">
-            <div class="col-25">
+            <div class="col-md-3">
               <label>Price</label>
             </div>
-            <div class="col-75">
-              {{ form.price }}
+            <div class="col-md-3">
+              {{ form.price}}
             </div>
           </div>
           <div class="row">
-            <div class="col-25">
+            <div class="col-md-3">
               <label>Offers</label>
             </div>
-            <div class="col-75">
+            <div class="col-md-3">
               {{ form.offers }}
             </div>
           </div>
           <div class="row">
-            <div class="col-25">
+            <div class="col-md-3">
               <label>New Price</label>
             </div>
-            <div class="col-75">
+            <div class="col-md-3">
               {{ form.newprice }}
             </div>
           </div>
           <div class="row">
-            <div class="col-25">
-              <label>Size</label>
-            </div>
-            <div class="col-75">
-              {{ form.size }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-25">
+            <div class="col-md-3">
               <label>Stock</label>
             </div>
-            <div class="col-75">
+            <div class="col-md-3">
               {{ form.stock }}
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label>Size</label>
+            </div>
+            <div class="col-md-3">
+              {{ form.size }}
+            </div>
+          </div>
+          
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="form-outline">
+                <!-- <input type="text" id="form3Example1" class="form-control" /> -->
+                <label class="form-label" for="form3Example1">Image 1</label>
+                {{form.image1}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-outline">
+                <!-- <input type="text" id="form3Example2" class="form-control" /> -->
+                <label class="form-label" for="form3Example2">Image 2</label>
+                {{form.image2}}
+              </div>
+            </div>
+          </div>
+  
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <div class="form-outline">
+                <!-- <input type="text" id="form3Example1" class="form-control" /> -->
+                <label class="form-label" for="form3Example1">Image 3</label>
+                {{form.image3}}
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-outline">
+                <!-- <input type="text" id="form3Example2" class="form-control" /> -->
+                <label class="form-label" for="form3Example2">Image 4</label>
+                {{form.image4}}
+              </div>
+            </div>
+          </div>
+           
           <div class="row">
             <button style="margin-top: 10px; color: white; border-color: white;"
                             class="btn btn-primary " id="confirm-btn"
@@ -556,3 +553,5 @@
 	
 </body>
 </html>
+
+

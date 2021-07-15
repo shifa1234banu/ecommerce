@@ -175,8 +175,8 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
-								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+								<li><a href="" class="active">Home</a></li>
+								<li class="dropdown"><a href="#">Shop</a>
                                     <!-- <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
 										<li><a href="product-details.html">Product Details</a></li> 
@@ -192,7 +192,7 @@
                                     <!-- </ul> -->
                                 <!-- </li>  -->
 								<!-- <li><a href="404.html">404</a></li> -->
-								<li><a href="contact-us.html">Contact</a></li>
+								<li><a href="">Contact</a></li>
 							</ul>
 						</div>
 					</div>
@@ -388,9 +388,9 @@
 											<h4>{{ product.brand }}</h4>
 											<p><a href="{% url 'productdetails' product.id %}">{{ product.productname }}</a></p>
 											{% if request.user.is_authenticated %}
-											<button value="{{product.id}}" class="add-button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+											<button value="{{product.id}}" style="background-color:orange"class="add-button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
 											{% else %}
-											<a href="{% url 'userlogin' %}"><button  class="add-button" class="btn btn-default "><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											<a href="{% url 'userlogin' %}"><button style="background-color:orange  class="add-button" class="btn btn-default "><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
 											{% endif %}
 										</div>
 										

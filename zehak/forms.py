@@ -2,23 +2,27 @@ from django import forms
 from .models import Address,Order,Profile,User
 
 class ProfileForm(forms.ModelForm):
+    
+    class Meta:
+        model = Profile
+        fields = ('num',)
+
+
+    # def clean_num(self):
+    #     num = self.data.get('num')
+    #     if Profile.objects.filter(num=num).exists():
+    #         raise forms.ValidationError(
+    #             ("phone number already taken"),code='invalid')
+    #     if len(num) != 10:
+    #         raise forms.ValidationError(
+    #             ("phone number must be valid format"),code='invalid')
+    #     else:
+    #         return num
+class ImageForm(forms.ModelForm):
     userimage = forms.ImageField(required=False, error_messages={'invalid':("Image file only")}, widget=forms.FileInput)
     class Meta:
         model = Profile
-        fields = ('userimage','num')
-
-
-    def clean_num(self):
-        num = self.data.get('num')
-        if Profile.objects.filter(num=num).exists():
-            raise forms.ValidationError(
-                ("phone number already taken"),code='invalid')
-        if len(num) != 10:
-            raise forms.ValidationError(
-                ("phone number must be valid format"),code='invalid')
-        else:
-            return num
-
+        fields = ('userimage',)
 
 
 class UserForm(forms.ModelForm):

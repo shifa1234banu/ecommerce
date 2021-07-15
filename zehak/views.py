@@ -7,7 +7,7 @@ from .models import Profile,Cart,CartItem,Address,Order
 from django.http import HttpResponse,JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q,Count
-from .forms import AddressForm,ProfileForm,UserForm
+from .forms import AddressForm,ProfileForm,UserForm,ImageForm
 import random
 from twilio.rest import Client
 from django.contrib.auth.decorators import login_required
@@ -136,12 +136,12 @@ def otplogin(request):
         if is_user :
 
             
-            account_sid = config('account_sid')
-            auth_token = config('auth_token')
+            account_sid = config('account_sid',cast=str)
+            auth_token = config('auth_token',cast=str)
             client = Client(account_sid, auth_token)
-
+            service=config('verification',cast=str)
             verification = client.verify \
-                                .services(config('verification')) \
+                                .services(service) \
                                 .verifications \
                                 .create(to='+91' +num, channel='sms')
 
@@ -168,7 +168,7 @@ def verify(request):
         client = Client(account_sid, auth_token)
 
         verification_check = client.verify \
-                                .services(config('verification')) \
+                                .services(config('verification',cast=str)) \
                                 .verification_checks \
                                 .create(to='+91' +num, code=otp)
 
@@ -195,27 +195,53 @@ def userprofile(request):
     
         user =request.user
         profile = Profile.objects.get(user=user)
+        print(profile.userimage)
 
         profileform = ProfileForm(instance=profile)
+        imageform = ImageForm(instance=profile)
 
         userform = UserForm(instance=user)
         
 
         if request.method == 'POST':
              print('work')
-             profileform = ProfileForm(request.POST , request.FILES , instance=profile)
+             profileform = ProfileForm(request.POST , instance=profile)
+             imageform = ImageForm(request.POST , request.FILES , instance=profile)
 
-             if profileform.is_valid():
-                profileform.save()
+             if imageform.is_valid():
+                print('worked')
+                imageform.save()
+                return redirect('userprofile')
 
        
         context={
             'profileform' : profileform,
             'userform': userform,
+            'imageform' : imageform,
+            'profile':profile
          }
             
     
         return render(request,"user/profile.html",context)
+
+
+def editprofile(request):
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    
+    if request.method == 'POST':
+        profileform = ProfileForm(request.POST,instance = profile)
+        userform = UserForm(request.POST,instance = user)
+        print('valid check')
+        if userform.is_valid() and profileform.is_valid():
+            profileform.save()
+            userform.save()
+            return redirect('userprofile')
+        else:
+            profileform = ProfileForm(instance = profile)
+            userform = UserForm(instance = user)
+            return redirect('userprofile')
+                    
 
 
 @login_required(login_url='userlogin')
@@ -534,23 +560,7 @@ def couponcheck(request,total=0,quantity=0):
         return JsonResponse("false",safe=false)    
 
 
-def editprofile(request):
-    user = request.user
-    profile = Profile.objects.get(user=user)
-    
-    if request.method == 'POST':
-        profileform = ProfileForm(request.POST,instance = profile)
-        userform = UserForm(request.POST,instance = user)
-        print('valid check')
-        if userform.is_valid() and profileform.is_valid():
-            profileform.save()
-            userform.save()
-            return redirect('userprofile')
-        else:
-            profileform = ProfileForm(instance = profile)
-            userform = UserForm(instance = user)
-            return redirect('userprofile')
-            
+
 
 def logout(request):
     auth.logout(request)

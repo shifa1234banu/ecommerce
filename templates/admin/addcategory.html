@@ -82,6 +82,14 @@
 	.signup-form form a:hover {
 		text-decoration: underline;
 	}
+	.input[type=text], select, textarea {
+		width: 100px;
+		height: 100px;
+		padding: 12px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		resize: vertical;
+	}
 </style>
 </head>
 <body>
@@ -94,7 +102,7 @@
 				<form style="border-radius: 5px; width: 500px;" method="POST"  enctype="multipart/form-data">
 					{% csrf_token %}
 					
-					{{ form.media }}
+					<div class="shifa">{{ form.media }}</div>
 					{{ form.as_p }}
 			      <div class="col-md-12">
 					  <div class="col-md-3"></div>

@@ -390,7 +390,7 @@
 											{% if request.user.is_authenticated %}
 											<button value="{{product.id}}" style="background-color:orange"class="add-button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
 											{% else %}
-											<a href="{% url 'userlogin' %}"><button style="background-color:orange  class="add-button" class="btn btn-default "><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											<a href="{% url 'userlogin' %}"><button class="btn btn-primary"  class="add-button" class="btn btn-default btn btn-default"><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
 											{% endif %}
 										</div>
 										

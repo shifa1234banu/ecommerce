@@ -128,23 +128,26 @@
 						<div class="shop-menu clearfix pull-right">
 							<ul class="nav navbar-nav">
 								<li class="dropdown"><a href=""><i class="fa fa-user"> Account</i>
-								
+									{% if user.is_authenticated %}
 									<ul style="background: rgba(253, 253, 253, 0.178); box-shadow: none;" class="sub-menu ">
                                         <li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'userprofile' %}">My profile</a></li><br>
 										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'myorder' %}">My orders</a></li><br>
 										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="">settings</a></li> 
 										 
-                                    </ul> 
+									</ul> 
+									{% endif %}
 								
 								
 								</a>
 								</li>
 								
 								
+								{% if user.is_authenticated %}
 								<li><a href="{% url 'cart'  %}"><i class="fa fa-shopping-cart"></i> Cart
 									
 									<span class='badge badge-warning' id='lblCartCount'>{{ cart_count }}</span>
 								</a></li>
+								{% endif %}
 								{% if user.is_authenticated %}
          						
 								  <li><a href="{% url 'logout' %}">Logout</a><p style="color: orange;">{{user.username}}</p></li>
@@ -204,6 +207,7 @@
 						<button type="submit">
 							<i class="fa fa-search" aria-hidden="true"></i>
 						</button>
+						
 					</span>
 					</div>
 					</form>

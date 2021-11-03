@@ -148,7 +148,7 @@
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
 								<li><a href="/">Home</a></li>
-								<li class="dropdown"><a href="">Shop</a>
+								<li><a href="">Shop</a>
 									<!-- <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
 										<li><a href="product-details.html" class="active">Product Details</a></li> 
@@ -192,22 +192,14 @@
 
 
 
-
+							{% for i in categories %}
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Party Wear</a></h4>
+									<h4 class="panel-title"><a href="{% url 'catformal' i.id %}">{{i.category_name}}</a></h4>
 								</div>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Formal wear</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Casual wear</a></h4>
-								</div>
-							</div>
+							{% endfor %}
+							
 
 						</div>
 						<!--/category-products-->
@@ -215,36 +207,21 @@
 						<div class="brands_products">
 							<!--brands_products-->
 							<h2>Brands</h2>
+							{% for i in brands %}
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
-									<li><a href="#"> <span class="pull-right"></span>veromoda</a></li>
-									<li><a href="#"> <span class="pull-right"></span>H&M</a></li>
-									<li><a href="#"> <span class="pull-right"></span>Max</a></li>
-									<li><a href="#"> <span class="pull-right"></span>Master harbour</a></li>
-									<li><a href="#"> <span class="pull-right"></span>allen solly</a></li>
-									<li><a href="#"> <span class="pull-right"></span>sassfras</a></li>
-									<li><a href="#"> <span class="pull-right"></span>bhama</a></li>
+									<li><a href="{% url 'brand' i.brand %}"> <span class="pull-right"></span>{{i.brand}}</a></li>
+									
 								</ul>
 							</div>
+							{% endfor %}
 						</div>
 						<!--/brands_products-->
 
-						<div class="price-range">
-							<!--price-range-->
-							<h2>Price Range</h2>
-							<div class="well">
-								<input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600"
-									data-slider-step="5" data-slider-value="[250,450]" id="sl2"><br />
-								<b>$ 0</b> <b class="pull-right">$ 600</b>
-							</div>
-						</div>
-						<!--/price-range-->
+						
+					
 
-						<div class="shipping text-center">
-							<!--shipping-->
-							<img src="{% static 'user/images/home/shipping.jpg' %}" alt="" />
-						</div>
-						<!--/shipping-->
+						
 
 					</div>
 				</div>
@@ -584,7 +561,7 @@
 		$(document).on("click","#add-btn",function(){
 		  var id = '{{ product.id }}'  
 		  $.ajax({
-			url:"{% url 'add_cart'%}",
+			url:"{% url 'add_cart' %}",
 			data:{
 				id: id,
 			},

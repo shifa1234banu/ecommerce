@@ -51,7 +51,7 @@
 								<li><a href=""><i class="fa fa-user"></i> Account</a></li>
 								
 								<li><a href=""><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href=""><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="userlogin"><i class="fa fa-lock"></i> Login</a></li>
 							</ul>
 						</div>
 					</div>
@@ -118,7 +118,7 @@
 							<div class="alert alert-{{class}}">
 								{{message}}
 							</div>
-							{% endif%}
+							{% endif %}
 							<input type="text" autocomplete="off" name="first_name" placeholder="First_Name"/>
 							<input type="text" autocomplete="off" name="last_name" placeholder="Last_Name"/>
 							<input type="email" autocomplete="off" name="email" placeholder="Email Address"/>
@@ -130,7 +130,7 @@
 						</form>
 						<div>
 							{% for message in messages %}
-							<h3>{{message}}</h3>
+							<h4 style="color: coral;">{{message}}</h3>
 							{% endfor %}
 						</div>
 					</div><!--/sign up form-->

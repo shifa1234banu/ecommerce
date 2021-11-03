@@ -29,23 +29,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     
     def __str__(self):
-        return self.brand
-
-
-
-class EditProduct(models.Model):
-    image1 = models.ImageField(upload_to='photos/productimages')
-    image2 = models.ImageField(upload_to='photos/productimages')
-    image3 = models.ImageField(upload_to='photos/productimages',blank=True)
-    image4 = models.ImageField(upload_to='photos/productimages',blank=True)
-    brand = models.CharField(max_length=50)
-    price = models.IntegerField()
-    offers = models.IntegerField()
-    
-    stock = models.IntegerField()
-    
-    def __str__(self):
-        return self.price        
+        return self.brand 
 
 
 class Coupon(models.Model):

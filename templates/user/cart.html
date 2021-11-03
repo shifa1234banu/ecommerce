@@ -23,6 +23,21 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'user/images/ico/apple-touch-icon-114-precomposed.png' %}">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'user/images/ico/apple-touch-icon-72-precomposed.png' %}">
     <link rel="apple-touch-icon-precomposed" href="{% static 'user/images/ico/apple-touch-icon-57-precomposed.png' %}">
+		<style>
+			@media(max-width: 356px){
+				.checkout{
+					
+					flex-direction: column;
+					justify-content: center;
+				}
+				.checkout2{
+					width: 87%;
+					margin-left: 38px;
+					
+					
+				}
+			}
+		</style>
 </head><!--/head-->
 
 <body>
@@ -181,7 +196,7 @@
 									<button style=" background: #F0F0E9;color: #696763;display: inline-block;font-size: 16px;height: 28px;overflow: hidden;text-align: center;width: 35px;float: left;
 									line-height: 28px; border: none;"  class="cart_quantity_down " data-product_id="{{cart_item.product.id}}" data-index="{{cart_item.id}}">-</button>
 									
-									<input class="cart_quantity_input" id="qty{{cart_item.id}}" type="text" name="quantity" value="{{ cart_item.quantity }}" autocomplete="off" size="2">
+									<input class="cart_quantity_input" id="qty{{cart_item.id}}" type="text" name="quantity" value="{{ cart_item.quantity }}" autocomplete="off" size="2" readonly>
 									<a type="button" class="cart_quantity_up" id="{{cart_item.id}}" data-car_id="{{cart_item.id}}" data-pro_id="{{cart_item.product.id}}"> + </a>
 								</div>
 							</td>
@@ -271,11 +286,13 @@
 							<li>Shipping Cost <span>Free</span></li> -->
 							<li>Total <span style="color: orange;">{{ total }}</span></li>
 						</ul>
+						<div class="checkout" style="display: flex;">
 							<a class="btn btn-default update" href="{% url 'home' %}">continue shopping</a>
 							<form method="POST" action="{% url 'checkout' %}">
 								{% csrf_token %}
-							<button type="submit" class="btn btn-default check_out">Check Out</button>
-						    </form>
+							<button  type="submit" class="btn btn-default check_out checkout2 ">Check Out</button>
+							</form>
+						</div>
 					</div>
 				</div>
 				</div>

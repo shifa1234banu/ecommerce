@@ -68,7 +68,7 @@ Website: http://www.webthemez.com/
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="{% url 'adhome' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a href="{% url 'ad_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
                         <a href="{% url 'user' %}" class="active-menu"><i class="fa fa-desktop"></i>user management</a>
@@ -182,9 +182,9 @@ Website: http://www.webthemez.com/
                                             <td class="center">{{ profile.num }}</td>
                                             <td>
                                                 {% if profile.user.is_active %}
-                                                <a onclick="return confirm('Are you sure want to block this user')" href="{% url 'blockuser' profile.user.id %}"><button type="submit">Block</button></a>
+                                                <a onclick="return confirm('Are you sure want to block this user')" href="{% url 'block_user' profile.user.id %}"><button type="submit">Block</button></a>
                                                 {% else %}
-                                                <a onclick="return confirm('Are you sure want to unblock the user ')" href="{% url 'unblockuser' profile.user.id %}"><button type="submit">UnBlock</button></a>
+                                                <a onclick="return confirm('Are you sure want to unblock the user ')" href="{% url 'unblock_user' profile.user.id %}"><button type="submit">UnBlock</button></a>
                                                 {% endif %}</i>
                                             
                                         </td>

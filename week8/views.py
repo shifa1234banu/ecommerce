@@ -24,7 +24,7 @@ def logincheck(request):
             user = auth.authenticate(username=username,password=password)
             if user is not None:
                 auth.login(request, user)
-                return redirect('adhome')
+                return redirect('ad_home')
             else:
                 messages.info(request, 'invalid credentials')
                 return redirect('adlogin')
@@ -40,7 +40,7 @@ def login(request):
 
 @login_required()
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def adhome(request):
+def ad_home(request):
     total=0
     totalorder = Order.objects.all().count()
     totaluser = User.objects.all().count()
@@ -102,7 +102,7 @@ def product(request):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def addproduct(request):
+def add_product(request):
 
     if request.method == 'POST':
         offerprice=0
@@ -167,7 +167,7 @@ def category(request):
     
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def addcategory(request):
+def add_category(request):
    
     if request.method == 'POST':
         
@@ -188,7 +188,7 @@ def addcategory(request):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def editcategory(request,id):
+def edit_category(request,id):
     category = Category.objects.get(pk=id)
     if request.method == 'POST':
         form = CategoryForm(request.POST, instance = category)
@@ -211,7 +211,7 @@ def editcategory(request,id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')   
-def editproduct(request, id):
+def edit_product(request, id):
     product = Product.objects.get(pk=id)
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES,instance = product)
@@ -220,6 +220,7 @@ def editproduct(request, id):
             form.save()
             print('working')
             return redirect('product')
+           
 
         
 
@@ -229,7 +230,7 @@ def editproduct(request, id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def deleteproduct(request, id):
+def delete_product(request, id):
     
 
         product = Product.objects.get(pk=id)
@@ -238,7 +239,7 @@ def deleteproduct(request, id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def deletecheck(request, id):
+def delete_check(request, id):
     
 
         product = Product.objects.get(pk=id)
@@ -249,7 +250,7 @@ def deletecheck(request, id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def blockuser(request, id):
+def block_user(request, id):
     user=User.objects.get(pk=id)
     user.is_active = False
     user.save()
@@ -258,7 +259,7 @@ def blockuser(request, id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def unblockuser(request, id):
+def unblock_user(request, id):
     user=User.objects.get(pk=id)
     user.is_active = True
     user.save()
@@ -267,7 +268,7 @@ def unblockuser(request, id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def categorycheck(request, id):
+def category_check(request, id):
     
 
         category = Category.objects.get(pk=id)
@@ -276,7 +277,7 @@ def categorycheck(request, id):
 
 @login_required(login_url='adlogin')
 @user_passes_test(lambda user: user.is_superuser,login_url='adlogin')
-def deletecategory(request, id):
+def delete_category(request, id):
     
 
         category = Category.objects.get(pk=id)

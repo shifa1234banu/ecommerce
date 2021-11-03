@@ -12,7 +12,7 @@ from django.contrib import messages
 
 class Profile(models.Model):
     user = models.OneToOneField(User ,on_delete=models.CASCADE)
-    num = models.CharField(max_length=15)
+    num = models.CharField(max_length=15,unique=True)
     
     userimage = models.ImageField(null=True,blank=True,upload_to='photos/productimages',default='user/images/user.png')
     

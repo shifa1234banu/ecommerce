@@ -69,7 +69,7 @@ Website: http://www.webthemez.com/
                 <ul class="nav" id="main-menu">
 
                     <li>
-                        <a href="{% url 'adhome' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
+                        <a href="{% url 'ad_home' %}"><i class="fa fa-dashboard"></i> Dashboard</a>
                     </li>
                     <li>
                         <a href="{% url 'user' %}"><i class="fa fa-desktop"></i> User management</a>
@@ -144,7 +144,7 @@ Website: http://www.webthemez.com/
                             category <small></small>
                         </h1>
                         <button type="button">
-                            <a href="{% url 'addcategory' %}">add category</a>
+                            <a href="{% url 'add_category' %}">add category</a>
                         </button>
 						
 									
@@ -174,8 +174,8 @@ Website: http://www.webthemez.com/
                                         <tr class="odd gradeX">
                                             <td>{{ forloop.counter }}</td>
                                             <td>{{ category.category_name }}</td>
-                                            <td><a onclick="return confirm('Are you sure want to delete this category')" href="{% url 'categorycheck' category.id %}"><button type="submit">Delete</button></a>
-                                                <a href="{% url 'editcategory' category.id %}"><button>Edit</button></a></td>
+                                            <td><a onclick="return confirm('Are you sure want to delete this category')" href="{% url 'category_check' category.id %}"><button type="submit">Delete</button></a>
+                                                <a href="{% url 'edit_category' category.id %}"><button>Edit</button></a></td>
 
                                             
                                             

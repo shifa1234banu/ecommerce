@@ -129,6 +129,18 @@
 							<ul class="nav navbar-nav">
 								<li class="dropdown"><a href=""><i class="fa fa-user"> Account</i>
 								
+									<ul style="background: rgba(253, 253, 253, 0.178); box-shadow: none;" class="sub-menu ">
+                                        <li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'userprofile' %}">My profile</a></li><br>
+										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="{% url 'myorder' %}">My orders</a></li><br>
+										<li><a style=" color: black; background: rgba(190, 185, 185, 0);" href="">settings</a></li> 
+										 
+                                    </ul> 
+								
+								
+								</a>
+								</li>
+								
+								
 									<ul role="menu" class="sub-menu">
                                         <li><a href="{% url 'userprofile' %}">My profile</a></li><br>
 										<li><a href="{% url 'myorder' %}">My orders</a></li><br>
@@ -175,15 +187,9 @@
 						</div>
 						<div class="mainmenu pull-left">
 							<ul class="nav navbar-nav collapse navbar-collapse">
-								<li><a href="index.html" class="active">Home</a></li>
-								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
-                                    <!-- <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
-                                    </ul> -->
+								<li><a href="/" class="active">Home</a></li>
+								<li><a href="">Shop</a>
+                                   
                                 </li> 
 								<!-- <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
@@ -192,7 +198,7 @@
                                     <!-- </ul> -->
                                 <!-- </li>  -->
 								<!-- <li><a href="404.html">404</a></li> -->
-								<li><a href="contact-us.html">Contact</a></li>
+								<li><a href="">Contact</a></li>
 							</ul>
 						</div>
 					</div>
@@ -213,39 +219,12 @@
 		</div><!--/header-bottom-->
 	</header><!--/header-->
 	
-	<section id="slider"><!--slider-->
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div id="slider-carousel" class="carousel slide" data-ride="carousel">
-						
-						
-						
-						
-						
-						
-					</div>
-					
-				</div>
-			</div>
-		</div>
-	</section><!--/slider-->
+	
 	
 	<section>
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-3">
-					<div class="left-sidebar">
-						
-						 <!--/category-products-->
-					
-						
-						
-						
-						
-					
-					</div>
-				</div>
+				
 				
 				<div class="col-sm-12 padding-right">
 					<div class="features_items"><!--features_items-->
@@ -267,178 +246,29 @@
 											<h2>Rs.{{ i.newprice }}</h2><p><del>{{ i.price }}</del></p>
 											<h4>{{ i.brand }}</h4>
 											<p><a href="{% url 'productdetails' i.id %}">{{ i.productname }}</a></p>
-											<!-- <button value="{{product.id}}" class="add-button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button> -->
+											<!-- {% if request.user.is_authenticated %}
+											<button value="{{product.id}}" style="background-color:orange"class="add-button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+											{% else %}
+											<a href="{% url 'userlogin' %}"><button class="btn btn-primary"  class="add-button" class="btn btn-default btn btn-default"><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											{% endif %} -->
 										</div>
-										
-										<!-- <div class="product-overlay">
-											<div class="overlay-content">
-												<h2>$56</h2>
-												<p>Easy Polo Black Edition</p>
-												<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>
-												</a>
-											</div>
-										</div> -->
 								</div>
-								<!-- <div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div> -->
+								
 							</div>
 						</div>
 						{% endfor %}
 						
-						</div>
-						
-						
-						<!-- <div class="col-sm-4">
-							<div class="product-image-wrapper">
-								<div class="single-products">
-									<div class="productinfo text-center">
-										<img src="{% static 'user/images/home/vero moda.webp' %}" alt="" />
-										<h2>$56</h2>
-										<p>Easy Polo Black Edition</p>
-										<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-									</div>
-									<div class="product-overlay">
-										<div class="overlay-content">
-											<h2>$56</h2>
-											<p>Easy Polo Black Edition</p>
-											<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-										</div>
-									</div>
-								</div>
-								<div class="choose">
-									<ul class="nav nav-pills nav-justified">
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-										<li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-									</ul>
-								</div>
-							</div>
-						</div> -->
-						
-					</div><!--features_items-->
+					</div>
 					
-					<div class="category-tab"><!--category-tab-->
-						
-						<div class="tab-content">
-							<div class="tab-pane fade active in" id="party" >
-								
-								
-								
-								
-							</div>
-							
-							
-							
-							
-			
-							
-							
-						</div>
-					</div><!--/category-tab-->
+				</div><!--features_items-->
 					
-					<!-- <div class="recommended_items"><!--recommended_items-->
-						<!-- <h2 class="title text-center">recommended items</h2>
-						
-						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								<div class="item active">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{% static 'user/images/home/W.webp' %}" alt="" />
-													<h2>Rs.986</h2>
-													<p>W</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{% static 'user/images/home/Roadster.jpg' %}" alt="" />
-													<h2>Rs.800</h2>
-													<p>Roadster</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{% static 'user/images/home/party 3.webp' %}" alt="" />
-													<h2>Rs.3000</h2>
-													<p>Mast&Harbour</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="item">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{% static 'user/images/home/tokyo talkies.webp' %}" alt="" />
-													<h2>Rs.900</h2>
-													<p>Tokyo talkies</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{% static 'user/images/home/sassafras1.webp' %}" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="{% static 'user/images/home/vero moda.webp' %}" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-												</div>
-												
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-								<i class="fa fa-angle-left"></i>
-							  </a>
-							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-								<i class="fa fa-angle-right"></i>
-							  </a>			
-						</div> -->
-					<!-- </div>/recommended_items -->
+					
+					
+					
 					
 				</div>
 			</div>
-		</div>
+		
 	</section>
 	
 	<footer id="footer"><!--Footer-->

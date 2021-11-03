@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 import datetime
 import razorpay
 from decouple import config
+from django.views.decorators.cache import never_cache
 
 
 
@@ -40,7 +41,7 @@ def home(request):
     print(request.user.is_authenticated)
     context = {'products' : product,
                'categories': category,
-               'brands':brand
+               'brands':brand,
                 }
     
     return render(request,"user/index.html",context)
@@ -56,12 +57,17 @@ def size(request):
        
 
 def userlogin(request):
+    
     return render(request,"user/login.html")
 
 
 def productdetails(request, id):
     product = Product.objects.get(id=id)
-    context={'product' : product}
+    categories = Category.objects.all()
+    brands = Product.objects.filter(brand=brand)
+    context={'product' : product,
+             'categories':categories,
+             'brands': brand }
     return render(request,"user/product-details.html", context)    
 
 
@@ -80,12 +86,15 @@ def register(request):
             username = request.POST['username']
             
 
-            check_user = User.objects.filter(email=email).first()
-            check_profile = Profile.objects.filter(num=num).first()
-            
-            if check_user or check_profile :
-                context = {'message' : 'user already exist','class' : 'danger'}
-                return render(request,"user/login.html",context) 
+            if User.objects.filter(username=username).exists():
+                messages.info(request, 'username already exist')
+                return render(request,'user/register.html')
+            elif Profile.objects.filter(num=num).exists(): 
+                messages.info(request, 'phone number already exist')
+                return render(request,'user/register.html')  
+                
+            else:
+                return render(request,"user/login.html") 
 
             user =User.objects.create_user(first_name =first_name,last_name=last_name,email=email,password=password,username=username)
             user.save()
@@ -129,6 +138,8 @@ def logincheck(request):
         else:
             return redirect('userlogin')   
 
+
+
 def otplogin(request):
     if request.method == 'POST':
         num = request.POST['num']
@@ -153,7 +164,7 @@ def otplogin(request):
             request.session['num'] = num
             return render(request,"user/otp.html")
         else:
-            messages.error(request,"This phone number is not registered",extra_tags=signin)
+            messages.info(request,"This phone number is not registered")
     return render(request,"user/login.html")
 
 def verify(request):
@@ -243,9 +254,9 @@ def editprofile(request):
             return redirect('userprofile')
                     
 
-
+@never_cache
 @login_required(login_url='userlogin')
-def checkout(request, total=0, quantity=0,cart_item=None):
+def checkout(request, total=0, quantity=0,cart_item=None,sub_total=0):
     if request.session.has_key('num'):
         cart_items = None
         try:
@@ -278,12 +289,14 @@ def checkout(request, total=0, quantity=0,cart_item=None):
     else:
         return redirect('userlogin')    
     
-
+@never_cache
 def _cart_id(request):
     cart = request.session.session_key
     if not cart:
         cart = request.session.create()
-    return cart        
+    return cart    
+
+@never_cache
 def cart(request):
     user=request.user
     cart_items=None
@@ -309,6 +322,7 @@ def cart(request):
 
 
 login_required(login_url='userlogin')
+@never_cache
 def add_cart(request):
     id = int(request.GET['id'])
    
@@ -390,6 +404,8 @@ def search(request):
         if keyword:
             products = Product.objects.filter(Q(productname__icontains=keyword) | Q(brand__icontains=keyword))
             product_count = products.count()
+        else:
+            return render(request,"user/index.html")    
     context = {
         'products' : products,
         'product_count' : product_count,
@@ -414,39 +430,35 @@ def address(request):
             address=form.save(commit=False)
             address.user=request.user
             address.save()
+
+            
     return redirect('checkout')
 
+    
+@never_cache
 def place_order(request):
-        total=0
-        quantity=0
+    print('hi')
+    total=0
+    quantity=0
+    cart_items = CartItem.objects.filter(user=request.user, is_active=True)
+    if cart_items.exists():
+        for cart_item in cart_items:
+            total +=(cart_item.product.newprice * cart_item.quantity)
+            quantity += cart_item.quantity
         
-        
-        try:
-            # cart = Cart.objects.get(cart_id=_cart_id(request))
-            cart_items = CartItem.objects.filter(user=request.user, is_active=True)
-            for cart_item in cart_items:
-                total +=(cart_item.product.newprice * cart_item.quantity)
-                quantity += cart_item.quantity
-           
-            delivery = 100
-            grandtotal = total + delivery
+        delivery = 100
+        grandtotal = total + delivery
 
-            request.session['grandtotal'] =  grandtotal
-            if request.session.has_key('total2'):
-                subtotal = request.session['total2'] * 100
-                print(subtotal)
-                # del request.session['total2']
-            else:
-                subtotal = grandtotal * 100
-            request.session['subtotal'] = subtotal
-            print(request.session['subtotal'])
-           
-           
-        except ObjectDoesNotExist:
-            pass
-        
-        
-        
+        request.session['grandtotal'] =  grandtotal
+        if request.session.has_key('total2'):
+            subtotal = request.session['total2'] * 100
+            print(subtotal)
+            # del request.session['total2']
+        else:
+            subtotal = grandtotal * 100
+        request.session['subtotal'] = subtotal
+        print(request.session['subtotal'])
+
         try:
             address_id =(request.POST.get('address'))
             bill_address = Address.objects.get(id=address_id)
@@ -458,7 +470,7 @@ def place_order(request):
         order_currency = 'INR'
         client = razorpay.Client(auth=("rzp_test_krpej6LVaGfmNT", "sPVzxFmh0PyMnAvMkXrS1Qs0"))
         payment = client.order.create({'amount': amount, 'currency': 'INR',
-                                       'payment_capture': '1'})
+                                    'payment_capture': '1'})
         request.session['payment_method'] = 'razorpay'                               
         # print(request.session['payment_method']) 
         context ={
@@ -476,10 +488,11 @@ def place_order(request):
 
     
         return render(request,"user/placeorder.html",context)
+    else:
+        return redirect('home') 
 
 
-
-
+@never_cache
 def razorsuccess(request,total=0):
 
         
@@ -491,7 +504,7 @@ def razorsuccess(request,total=0):
        
     
             pay_method = request.session['payment_method']
-            order = Order.objects.create(user=request.user,item=cart_item.product,price=amount,pay_method=pay_method)
+            order = Order.objects.create(user=request.user,item=cart_item.product,price=(cart_item.product.newprice * cart_item.quantity),pay_method=pay_method)
             order.save()
             cart_item.delete()
     
@@ -500,6 +513,7 @@ def razorsuccess(request,total=0):
 
 def myorder(request):
     user=request.user
+    Order.objects.all().delete()
     order = Order.objects.filter(user=user)
    
    
@@ -511,11 +525,11 @@ def myorder(request):
     
     
     return render(request,"user/myorder.html",context)
-   
+
+@never_cache  
 def paypal(request,total=0):
     total=0
-    cart = Cart.objects.get(cart_id=_cart_id(request))
-    cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+    cart_items = CartItem.objects.filter(user=request.user, is_active=True)
     for cart_item in cart_items:
         total += (cart_item.product.newprice * cart_item.quantity)
     amount = total+100
@@ -526,11 +540,12 @@ def paypal(request,total=0):
     cart_item.delete()
     return render(request,"user/success.html")
 
-
+@never_cache
 def couponcheck(request,total=0,quantity=0):
     if request.method == 'POST':
-        cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        
+        print(cart)
+        cart_items = CartItem.objects.filter(user=request.user, is_active=True)
         for cart_item in cart_items:
             total +=(cart_item.product.newprice * cart_item.quantity)
             quantity += cart_item.quantity

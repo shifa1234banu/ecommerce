@@ -94,21 +94,18 @@ def register(request):
                 return render(request,'user/register.html')  
                 
             else:
-                return render(request,"user/login.html") 
+               
+                user = User.objects.create_user(first_name =first_name,last_name=last_name,email=email,password=password,username=username)
+                user.save()
+                print(user)
 
-            user =User.objects.create_user(first_name =first_name,last_name=last_name,email=email,password=password,username=username)
-            user.save()
-
-            
-            
-            
-            profile = Profile()
-            profile.num=num
-            profile.user=user
-            profile.save()
-            print('working')
-            # request.session['validnum'] = 'validnum'
-            return redirect('home')
+                profile = Profile()
+                profile.num=num
+                profile.user=user
+                profile.save()
+                print('working')
+                # request.session['validnum'] = 'validnum'
+                return redirect('userlogincheck')
 
         return render(request,"user/register.html")
 

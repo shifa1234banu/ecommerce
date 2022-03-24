@@ -465,7 +465,7 @@ def place_order(request):
         amount=request.session['subtotal']
         rupee= float(amount)*100
         order_currency = 'INR'
-        client = razorpay.Client(auth=("rzp_test_krpej6LVaGfmNT", "sPVzxFmh0PyMnAvMkXrS1Qs0"))
+        client = razorpay.Client(auth=("rzp_test_QIerUDZSoHOKdF", "DfrQADeyjM9K6Jz5sCHsJ0vc"))
         payment = client.order.create({'amount': amount, 'currency': 'INR',
                                     'payment_capture': '1'})
         request.session['payment_method'] = 'razorpay'                               
@@ -510,7 +510,7 @@ def razorsuccess(request,total=0):
 
 def myorder(request):
     user=request.user
-    Order.objects.all().delete()
+    
     order = Order.objects.filter(user=user)
    
    
